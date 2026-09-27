@@ -412,8 +412,8 @@ html[data-appearance="dark"] {
   z-index: 2;
   display: flex;
   align-items: flex-start;
-  justify-content: center;
-  padding: 4px max(12px, env(safe-area-inset-left, 12px)) 0 max(12px, env(safe-area-inset-right, 12px));
+  justify-content: flex-start;
+  padding: 4px max(12px, env(safe-area-inset-right, 12px)) 0 max(12px, env(safe-area-inset-left, 12px));
   box-sizing: border-box;
   pointer-events: none;
 }
@@ -422,7 +422,7 @@ html[data-appearance="dark"] {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 14px;
   width: 100%;
   max-width: 100%;
@@ -449,6 +449,7 @@ html[data-appearance="dark"] {
 .harmony-page__widget-wrap .ios-academy-widget {
   --agw-size: min(169px, calc(var(--ipw-widget-w, 364px) * 0.46));
   flex: 0 0 auto;
+  pointer-events: auto;
 }
 
 @media (min-width: 1024px) {
