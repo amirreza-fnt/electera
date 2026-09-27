@@ -425,8 +425,10 @@ html[data-appearance="dark"] {
   align-items: flex-start;
   justify-content: flex-start;
   gap: 12px;
-  width: 100%;
-  max-width: 100%;
+  --harmony-widget-strip-w: min(var(--hp-panel-w), calc(100vw - 40px));
+  width: min(100%, var(--harmony-widget-strip-w));
+  max-width: min(100%, var(--harmony-widget-strip-w));
+  box-sizing: border-box;
   pointer-events: none;
 }
 
@@ -437,13 +439,7 @@ html[data-appearance="dark"] {
   }
 
   .harmony-page__widget-row {
-    width: auto;
-    max-width: min(760px, calc(100vw - 40px));
     justify-content: flex-start;
-  }
-
-  .harmony-page__widget-wrap .ios-photos-widget {
-    --ipw-widget-w: min(340px, calc((100vw - 72px) / 2 - 14px));
   }
 }
 
@@ -452,33 +448,18 @@ html[data-appearance="dark"] {
   pointer-events: auto;
 }
 
-.harmony-page__widget-square-row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
-  justify-content: flex-start;
-  gap: 14px;
-  width: 100%;
+.harmony-page__widget-wrap .ios-widget-square-pair {
   pointer-events: none;
 }
 
-.harmony-page__widget-square-row .ios-widget-square-pair {
-  pointer-events: none;
-}
-
-.harmony-page__widget-square-row .ios-academy-widget,
-.harmony-page__widget-square-row .ios-stats-dashboard-wrap {
+.harmony-page__widget-wrap .ios-widget-square-pair > * {
   pointer-events: auto;
 }
 
-@media (min-width: 1024px) {
-  .harmony-page__widget-wrap .ios-academy-widget {
-    --agw-size: min(169px, calc((100vw - 72px) / 2 - 14px));
-  }
-}
-
 .harmony-page__widget-wrap .ios-photos-widget {
-  --ipw-widget-w: min(var(--hp-panel-w), calc(100vw - 40px));
+  --ipw-widget-w: 100%;
+  width: 100%;
+  max-width: 100%;
   pointer-events: auto;
 }
 

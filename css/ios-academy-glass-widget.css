@@ -9,6 +9,18 @@
   font-family: "Yekan Bakh", ui-rounded, "Segoe UI", system-ui, sans-serif;
 }
 
+.ios-widget-square-pair .ios-academy-widget__inner {
+  padding: 8% 7% 7%;
+}
+
+.ios-widget-square-pair .ios-academy-widget__title {
+  font-size: clamp(0.66rem, 4.2cqi, 0.84rem);
+}
+
+.ios-widget-square-pair .ios-academy-widget__surface {
+  container-type: inline-size;
+}
+
 .ios-academy-widget__surface {
   width: 100%;
   aspect-ratio: 1;

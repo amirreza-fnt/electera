@@ -75,6 +75,7 @@
   padding: 28px 20px;
   border-radius: 28px;
   box-sizing: border-box;
+  --harmony-widget-strip-w: min(364px, calc(100vw - 88px));
   background:
     radial-gradient(ellipse 90% 70% at 15% 20%, rgba(245, 184, 32, 0.35), transparent 55%),
     radial-gradient(ellipse 80% 60% at 85% 75%, rgba(100, 160, 220, 0.32), transparent 58%),
@@ -105,13 +106,19 @@
 }
 
 .widget-lab__stage-block--wide {
-  width: 100%;
-  max-width: 100%;
-  align-items: center;
+  width: min(100%, var(--harmony-widget-strip-w));
+  max-width: var(--harmony-widget-strip-w);
+  align-items: stretch;
 }
 
 .widget-lab__stage-block--wide .ios-widget-square-pair {
-  justify-content: center;
+  justify-content: flex-start;
+}
+
+.widget-lab__stage-block:first-of-type .ios-photos-widget {
+  --ipw-widget-w: var(--harmony-widget-strip-w);
+  width: var(--harmony-widget-strip-w);
+  max-width: 100%;
 }
 
 .widget-lab__status {
