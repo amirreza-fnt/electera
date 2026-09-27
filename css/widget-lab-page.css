@@ -117,8 +117,9 @@
 
 .widget-lab__stage-block:first-of-type .ios-photos-widget {
   --ipw-widget-w: var(--harmony-widget-strip-w);
-  width: var(--harmony-widget-strip-w);
-  max-width: 100%;
+  --ipw-widget-h: calc(var(--harmony-widget-strip-w) * 0.47);
+  width: min(100%, var(--harmony-widget-strip-w));
+  max-width: var(--harmony-widget-strip-w);
 }
 
 .widget-lab__status {
