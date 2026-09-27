@@ -252,9 +252,11 @@
     const size = indicatorSize();
     const x = rect.left - navRect.left - nav.clientLeft + (rect.width - size) / 2;
     const y = rect.top - navRect.top - nav.clientTop + (rect.height - size) / 2;
+    const radius = Math.max(12, Math.min(18, Math.round(size * 0.32)));
 
     indicator.style.width = `${size}px`;
     indicator.style.height = `${size}px`;
+    indicator.style.borderRadius = `${radius}px`;
     indicator.style.transform = `translate3d(${Math.round(x)}px, ${Math.round(y)}px, 0)`;
     window.clearTimeout(nav._hpAnimTimer);
     nav._hpAnimTimer = window.setTimeout(() => {

@@ -600,12 +600,16 @@ html[data-appearance="dark"] {
   left: 0;
   width: 0;
   height: 0;
-  border-radius: calc(12 * var(--hp-u, 0.55));
+  /* % scales with JS width/height — Safari-safe vs calc(var(--hp-u)) */
+  border-radius: 32%;
+  overflow: hidden;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.04));
   border: 1px solid rgba(255, 255, 255, 0.18);
   opacity: 0;
   transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
   backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
   will-change: transform, width, height;
 }
 
