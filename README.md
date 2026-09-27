@@ -8,6 +8,7 @@ Live site: **https://amirreza-fnt.github.io/electera/**
 
 - [Home (glass nav)](https://amirreza-fnt.github.io/electera/)
 - [Harmony home](https://amirreza-fnt.github.io/electera/harmony-home.html)
+- [Widget lab](https://amirreza-fnt.github.io/electera/widget.html)
 - [iOS 26 buttons](https://amirreza-fnt.github.io/electera/ios26-buttons.html)
 
 Static HTML — no build step.

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="asset-version" content="dev" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta http-equiv="Cache-Control" content="no-cache, must-revalidate" />
+  <title>ویجت — آزمایشگاه</title>
+  <meta name="description" content="آزمایشگاه ویجت iOS — Photos On This Day با چرخش خودکار تصاویر." />
+  <meta name="theme-color" content="#000000" id="widget-theme-color" />
+  <meta name="color-scheme" content="dark" id="widget-color-scheme" />
+
+  <link rel="stylesheet" href="css/fonts-yekan-bakh.css?v=20260927204251" />
+  <link rel="stylesheet" href="css/widget-lab-page.css?v=20260927204251" />
+</head>
+<body class="widget-lab" data-appearance="dark">
+  <main class="widget-lab__main">
+    <header class="widget-lab__head">
+      <h1 class="widget-lab__title">آزمایشگاه ویجت</h1>
+      <div class="widget-lab__tools" role="group" aria-label="حالت ظاهری">
+        <button type="button" class="widget-lab__mode" data-mode="light" aria-pressed="false">روشن</button>
+        <button type="button" class="widget-lab__mode is-active" data-mode="dark" aria-pressed="true">تاریک</button>
+      </div>
+    </header>
+
+    <p class="widget-lab__hint">
+      تصاویر را در <code dir="ltr">assets/widgets/</code> بگذارید:
+      <code dir="ltr">widget-1.png</code>، <code dir="ltr">widget-2.png</code>، … (یا <code dir="ltr">widjet-*</code>)
+    </p>
+
+    <div class="widget-lab__stage" id="widget-stage">
+      <article class="ios-photos-widget" id="photos-widget" aria-label="ویجت Photos — On This Day">
+        <div class="ios-photos-widget__frame">
+          <div class="ios-photos-widget__media" aria-hidden="true">
+            <img class="ios-photos-widget__photo is-active" alt="" decoding="async" />
+            <img class="ios-photos-widget__photo" alt="" decoding="async" />
+          </div>
+          <div class="ios-photos-widget__fx" aria-hidden="true"></div>
+          <div class="ios-photos-widget__scrim" aria-hidden="true"></div>
+          <div class="ios-photos-widget__copy">
+            <p class="ios-photos-widget__eyebrow">ON THIS DAY</p>
+            <p class="ios-photos-widget__date" id="widget-date"></p>
+          </div>
+        </div>
+        <p class="ios-photos-widget__caption">Photos</p>
+      </article>
+    </div>
+
+    <p class="widget-lab__status" id="widget-status" aria-live="polite"></p>
+  </main>
+
+  <script src="js/widget-lab-page.js?v=20260927204251" defer></script>
+</body>
+</html>
