@@ -487,6 +487,15 @@ html[data-appearance="dark"] {
   pointer-events: auto;
 }
 
+.harmony-page__widget-wrap {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.harmony-page__widget-wrap .harmony-media-apps {
+  pointer-events: auto;
+}
+
 .harmony-page__app {
   position: relative;
   z-index: 1;
