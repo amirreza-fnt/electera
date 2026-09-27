@@ -4,10 +4,10 @@ Collection of standalone HTML/CSS/JS demos: glass navigation, iOS 26 liquid glas
 
 ## GitHub Pages
 
-After deploy, open:
+Live site: **https://amirreza-fnt.github.io/electera/**
 
-- **Home:** `https://<your-username>.github.io/<repo-name>/`
-- **Harmony home:** `…/harmony-home.html`
-- **iOS 26 buttons:** `…/ios26-buttons.html`
+- [Home (glass nav)](https://amirreza-fnt.github.io/electera/)
+- [Harmony home](https://amirreza-fnt.github.io/electera/harmony-home.html)
+- [iOS 26 buttons](https://amirreza-fnt.github.io/electera/ios26-buttons.html)
 
-Static site — no build step. Serve from repository root (`/`).
+Static HTML — deployed from `main` via GitHub Actions (`.github/workflows/deploy-pages.yml`).
