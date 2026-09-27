@@ -42,6 +42,13 @@ window.HarmonyPhotosWidget = {
       root.classList.add("ios-photos-widget--firefox");
     }
 
+    const isIOS =
+      /iPhone|iPad|iPod/i.test(navigator.userAgent) ||
+      (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+    if (isIOS) {
+      root.classList.add("ios-photos-widget--ios");
+    }
+
     const setAppearance = (mode) => {
       root.setAttribute("data-appearance", mode === "dark" ? "dark" : "light");
     };
