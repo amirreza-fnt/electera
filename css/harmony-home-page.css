@@ -600,7 +600,7 @@ html[data-appearance="dark"] {
   left: 0;
   width: 0;
   height: 0;
-  border-radius: 999px;
+  border-radius: calc(12 * var(--hp-u, 0.55));
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.04));
   border: 1px solid rgba(255, 255, 255, 0.18);
   opacity: 0;
@@ -616,7 +616,10 @@ html[data-appearance="dark"] {
 
 .harmony-glass-nav__indicator.is-ready {
   opacity: 1;
-  transition: transform var(--hp-dur-slow) var(--hp-spring);
+  transition:
+    transform var(--hp-dur-slow) var(--hp-spring),
+    width var(--hp-dur-slow) var(--hp-spring),
+    height var(--hp-dur-slow) var(--hp-spring);
 }
 
 /* --- Settings pop (same glass as menu, narrower) --- */
@@ -642,13 +645,15 @@ html[data-appearance="dark"] {
 }
 
 .harmony-sheet__panel {
-  position: absolute;
+  position: fixed;
   left: 50%;
-  bottom: calc(clamp(96px, calc(112 * var(--hp-u)), 112px) + max(6px, env(safe-area-inset-bottom, 6px)));
+  right: auto;
+  bottom: var(--harmony-sheet-bottom, calc(104px + env(safe-area-inset-bottom, 0px)));
   width: min(268px, calc(100vw - 64px));
+  width: min(268px, calc(100dvw - 64px));
   padding: 10px;
-  transform: translate3d(-50%, 36px, 0) scale(0.82);
-  transform-origin: bottom center;
+  transform: translate(-50%, 20px) scale(0.94);
+  transform-origin: 50% 100%;
   opacity: 0;
   pointer-events: none;
   box-sizing: border-box;
@@ -659,7 +664,7 @@ html[data-appearance="dark"] {
 }
 
 .harmony-sheet.is-open .harmony-sheet__panel {
-  transform: translate3d(-50%, 0, 0) scale(1);
+  transform: translate(-50%, 0) scale(1);
   opacity: 1;
   pointer-events: auto;
   will-change: transform, opacity;
@@ -765,4 +770,30 @@ html[data-appearance="dark"] {
 
 .harmony-page--firefox .harmony-page__wall {
   filter: saturate(0.92) brightness(1.03);
+}
+
+/* Widget strip on home — override shared lab defaults without touching widget.html */
+.harmony-page__widget-wrap .ios-stats-dashboard-wrap {
+  width: 100%;
+  max-width: none;
+}
+
+.harmony-page .ios-widget-square-pair .ios-academy-widget__course-icon {
+  border-radius: 9px;
+  overflow: hidden;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0.28));
+  box-shadow:
+    inset 0 0 0 0.5px rgba(255, 255, 255, 0.72),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    0 2px 8px rgba(58, 48, 40, 0.12);
+  -webkit-backdrop-filter: blur(8px) saturate(1.12);
+  backdrop-filter: blur(8px) saturate(1.12);
+}
+
+.harmony-page[data-appearance="dark"] .ios-widget-square-pair .ios-academy-widget__course-icon {
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.08));
+  box-shadow:
+    inset 0 0 0 0.5px rgba(255, 255, 255, 0.35),
+    0 2px 8px rgba(0, 0, 0, 0.22);
 }

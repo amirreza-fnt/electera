@@ -30,7 +30,7 @@
 .ios-widget-square-pair .ios-academy-widget__course-icon {
   width: clamp(20px, 16cqi, 28px);
   height: clamp(20px, 16cqi, 28px);
-  border-radius: clamp(6px, 5.2cqi, var(--agw-icon-r, 9px));
+  border-radius: 9px;
 }
 
 .ios-widget-square-pair .ios-academy-widget__course-icon svg {

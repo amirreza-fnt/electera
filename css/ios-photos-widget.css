@@ -183,22 +183,35 @@
   color: #fff;
   text-shadow: 0 1px 12px rgba(58, 48, 40, 0.45);
   pointer-events: none;
+  font-family:
+    "Inter",
+    -apple-system,
+    BlinkMacSystemFont,
+    "SF Pro Text",
+    "SF Pro Display",
+    "Helvetica Neue",
+    system-ui,
+    sans-serif;
+  font-feature-settings: "kern" 1, "liga" 1;
+  -webkit-font-smoothing: antialiased;
 }
 
 .ios-photos-widget__eyebrow {
   margin: 0;
   font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.055em;
+  font-family: inherit;
 }
 
 .ios-photos-widget__date {
   margin: 2px 0 0;
   font-size: 13px;
   font-weight: 400;
+  letter-spacing: -0.022em;
   opacity: 0.92;
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+  font-family: inherit;
+  font-variant-numeric: proportional-nums;
 }
 
 @container (min-width: 1px) {

@@ -78,9 +78,25 @@
     }
   };
   syncHarmonyStripWidth();
-  window.addEventListener("resize", syncHarmonyStripWidth, { passive: true });
+  const dockPanel = document.querySelector(".harmony-dock .harmony-glass-panel");
+  const syncHarmonySheetAnchor = () => {
+    if (!dockPanel) return;
+    const rect = dockPanel.getBoundingClientRect();
+    if (!rect.height) return;
+    const gap = 10;
+    const bottom = Math.round(window.innerHeight - rect.top + gap);
+    if (bottom > 0) {
+      document.documentElement.style.setProperty("--harmony-sheet-bottom", `${bottom}px`);
+    }
+  };
+  const syncHarmonyLayout = () => {
+    syncHarmonyStripWidth();
+    syncHarmonySheetAnchor();
+  };
+  syncHarmonyLayout();
+  window.addEventListener("resize", syncHarmonyLayout, { passive: true });
   if (window.visualViewport) {
-    window.visualViewport.addEventListener("resize", syncHarmonyStripWidth, { passive: true });
+    window.visualViewport.addEventListener("resize", syncHarmonyLayout, { passive: true });
   }
 
   const syncThemeButton = (mode) => {
@@ -147,9 +163,12 @@
     setAppearance("light");
   }
 
+  let scheduleIndicatorStable = () => {};
+
   const setSheetOpen = (open) => {
     sheetOpen = open;
     if (!sheet) return;
+    syncHarmonyLayout();
     sheet.classList.toggle("is-open", open);
     sheet.setAttribute("aria-hidden", String(!open));
     body.classList.toggle("harmony-sheet-open", open);
@@ -160,11 +179,12 @@
     if (open) {
       activeNav = "settings";
       hashLinks.forEach((l) => l.removeAttribute("aria-current"));
-      if (nav && indicator) scheduleIndicatorStable();
+      scheduleIndicatorStable();
+      requestAnimationFrame(syncHarmonySheetAnchor);
     } else if (activeNav === "settings") {
       activeNav = routeFromHash();
       applyNavState(activeNav);
-    } else if (nav && indicator) {
+    } else {
       scheduleIndicatorStable();
     }
   };
@@ -183,12 +203,17 @@
     }
   });
 
-  if (!nav || !indicator) return;
-
   const routeFromHash = () => {
     const hash = window.location.hash.replace(/^#/, "");
     return routes.includes(hash) ? hash : routes[0];
   };
+
+  let applyNavState = (route) => {
+    activeNav = route;
+    document.title = `${BASE_TITLE} — ${route}`;
+  };
+
+  if (!nav || !indicator) return;
 
   const labelForRoute = (route) => {
     const link = hashLinks.find((l) => l.getAttribute("data-nav") === route);
@@ -224,14 +249,12 @@
     const rect = target.getBoundingClientRect();
     if (!navRect.width || !navRect.height) return;
 
-    const tabH = indicatorSize();
-    const tabW = Math.min(rect.width - 6, Math.max(tabH + 8, tabH * 1.35));
+    const size = indicatorSize();
+    const x = rect.left - navRect.left - nav.clientLeft + (rect.width - size) / 2;
+    const y = rect.top - navRect.top - nav.clientTop + (rect.height - size) / 2;
 
-    const x = rect.left - navRect.left - nav.clientLeft + (rect.width - tabW) / 2;
-    const y = rect.top - navRect.top - nav.clientTop + (rect.height - tabH) / 2;
-
-    indicator.style.width = `${Math.round(tabW)}px`;
-    indicator.style.height = `${Math.round(tabH)}px`;
+    indicator.style.width = `${size}px`;
+    indicator.style.height = `${size}px`;
     indicator.style.transform = `translate3d(${Math.round(x)}px, ${Math.round(y)}px, 0)`;
     window.clearTimeout(nav._hpAnimTimer);
     nav._hpAnimTimer = window.setTimeout(() => {
@@ -247,14 +270,14 @@
     });
   };
 
-  const scheduleIndicatorStable = () => {
+  scheduleIndicatorStable = () => {
     scheduleIndicator();
     requestAnimationFrame(scheduleIndicator);
     window.setTimeout(scheduleIndicator, 120);
     window.setTimeout(scheduleIndicator, 520);
   };
 
-  const applyNavState = (route) => {
+  applyNavState = (route) => {
     activeNav = route;
     hashLinks.forEach((link) => {
       if (link.getAttribute("data-nav") === route) link.setAttribute("aria-current", "page");
@@ -310,7 +333,10 @@
   });
 
   if ("ResizeObserver" in window) {
-    const ro = new ResizeObserver(() => scheduleIndicatorStable());
+    const ro = new ResizeObserver(() => {
+      syncHarmonyLayout();
+      scheduleIndicatorStable();
+    });
     ro.observe(nav);
     const panel = nav.closest(".harmony-glass-panel");
     if (panel) ro.observe(panel);
@@ -319,6 +345,7 @@
   }
 
   applyNavState(routeFromHash());
+  syncHarmonyLayout();
   requestAnimationFrame(() => {
     scheduleIndicatorStable();
     requestAnimationFrame(() => indicator.classList.add("is-ready"));
