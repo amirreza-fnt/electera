@@ -3,8 +3,6 @@
  */
 window.HarmonyPhotosWidget = {
   init(root, options = {}) {
-    "use strict";
-
     const WIDGETS_DIR = "assets/widgets/";
     const widgetsBaseUrl = new URL(WIDGETS_DIR, document.baseURI).href;
     const MANIFEST = new URL("manifest.json", widgetsBaseUrl).href;
