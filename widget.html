@@ -6,12 +6,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta http-equiv="Cache-Control" content="no-cache, must-revalidate" />
   <title>ویجت — آزمایشگاه</title>
-  <meta name="description" content="آزمایشگاه ویجت iOS — Photos On This Day با چرخش خودکار تصاویر." />
+  <meta name="description" content="آزمایشگاه ویجت iOS — Photos و ویجت شیشه‌ای آموزشگاه." />
   <meta name="theme-color" content="#ebe3d9" />
   <meta name="color-scheme" content="light" />
 
-  <link rel="stylesheet" href="css/fonts-yekan-bakh.css?v=20260927214009" />
-  <link rel="stylesheet" href="css/widget-lab-page.css?v=20260927214009" />
+  <link rel="stylesheet" href="css/fonts-yekan-bakh.css?v=20260927214631" />
+  <link rel="stylesheet" href="css/widget-lab-page.css?v=20260927214631" />
 </head>
 <body class="widget-lab">
   <main class="widget-lab__main">
@@ -29,6 +29,8 @@
     </p>
 
     <div class="widget-lab__stage" id="widget-stage">
+      <div class="widget-lab__stage-block">
+        <p class="widget-lab__stage-label">Photos</p>
       <article class="ios-photos-widget is-pending" id="photos-widget" data-appearance="light" aria-label="ویجت Photos — On This Day">
         <div class="ios-photos-widget__frame" id="widget-frame">
           <div class="ios-photos-widget__glass" aria-hidden="true"></div>
@@ -45,12 +47,37 @@
         </div>
         <p class="ios-photos-widget__caption">Photos</p>
       </article>
+      </div>
+
+      <div class="widget-lab__stage-block">
+        <p class="widget-lab__stage-label">آموزشگاه</p>
+        <article
+          class="ios-academy-widget"
+          id="academy-widget"
+          data-appearance="light"
+          aria-label="ویجت آموزشگاه کامپیوتر"
+        >
+          <div class="ios-academy-widget__surface">
+            <div class="ios-academy-widget__inner">
+              <h2 class="ios-academy-widget__title">بهترین آموزشگاه کامیپوتر سبزوار</h2>
+              <ul class="ios-academy-widget__list">
+                <li>برنامه نویسی</li>
+                <li>رباتیک</li>
+                <li>هوش مصنوعی</li>
+                <li>گرافیک</li>
+              </ul>
+              <p class="ios-academy-widget__footer">و کلی آموزش جذاب دیگه</p>
+            </div>
+          </div>
+          <p class="ios-academy-widget__caption">Electera</p>
+        </article>
+      </div>
     </div>
 
     <p class="widget-lab__status" id="widget-status" aria-live="polite"></p>
   </main>
 
-  <script src="js/ios-photos-widget.js?v=20260927214009" defer></script>
-  <script src="js/widget-lab-page.js?v=20260927214009" defer></script>
+  <script src="js/ios-photos-widget.js?v=20260927214631" defer></script>
+  <script src="js/widget-lab-page.js?v=20260927214631" defer></script>
 </body>
 </html>

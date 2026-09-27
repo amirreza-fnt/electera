@@ -1,5 +1,6 @@
 /* Widget lab page chrome — component styles in ios-photos-widget.css */
 @import url("ios-photos-widget.css");
+@import url("ios-academy-glass-widget.css");
 
 .widget-lab {
   --ipw-widget-w: min(364px, calc(100vw - 48px));
@@ -66,7 +67,31 @@
 
 .widget-lab__stage {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
+  align-items: flex-start;
+  gap: 28px 22px;
+  padding: 28px 20px;
+  border-radius: 28px;
+  box-sizing: border-box;
+  background:
+    radial-gradient(ellipse 90% 70% at 15% 20%, rgba(245, 184, 32, 0.35), transparent 55%),
+    radial-gradient(ellipse 80% 60% at 85% 75%, rgba(100, 160, 220, 0.32), transparent 58%),
+    radial-gradient(ellipse 70% 50% at 50% 100%, rgba(212, 165, 116, 0.28), transparent 52%),
+    rgba(255, 255, 255, 0.15);
+}
+
+.widget-lab__stage-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 100%;
+}
+
+.widget-lab__stage-label {
+  margin: 0 0 10px;
+  font: 600 0.72rem/1.2 inherit;
+  opacity: 0.55;
 }
 
 .widget-lab__status {

@@ -5,6 +5,7 @@
   "use strict";
 
   const widget = document.getElementById("photos-widget");
+  const academyWidget = document.getElementById("academy-widget");
   const statusEl = document.getElementById("widget-status");
   const dateEl = document.getElementById("widget-date");
   const modeBtns = Array.from(document.querySelectorAll(".widget-lab__mode"));
@@ -26,9 +27,11 @@
   if (dateEl) dateEl.textContent = formatDate();
 
   const setWidgetAppearance = (mode) => {
-    if (ctrl) ctrl.setAppearance(mode);
+    const next = mode === "dark" ? "dark" : "light";
+    if (ctrl) ctrl.setAppearance(next);
+    if (academyWidget) academyWidget.setAttribute("data-appearance", next);
     modeBtns.forEach((btn) => {
-      const on = btn.getAttribute("data-mode") === (mode === "dark" ? "dark" : "light");
+      const on = btn.getAttribute("data-mode") === next;
       btn.classList.toggle("is-active", on);
       btn.setAttribute("aria-pressed", String(on));
     });
