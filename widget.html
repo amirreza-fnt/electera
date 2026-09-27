@@ -7,13 +7,13 @@
   <meta http-equiv="Cache-Control" content="no-cache, must-revalidate" />
   <title>ویجت — آزمایشگاه</title>
   <meta name="description" content="آزمایشگاه ویجت iOS — Photos On This Day با چرخش خودکار تصاویر." />
-  <meta name="theme-color" content="#000000" id="widget-theme-color" />
-  <meta name="color-scheme" content="dark" id="widget-color-scheme" />
+  <meta name="theme-color" content="#ebe3d9" />
+  <meta name="color-scheme" content="light" />
 
-  <link rel="stylesheet" href="css/fonts-yekan-bakh.css?v=20260927204251" />
-  <link rel="stylesheet" href="css/widget-lab-page.css?v=20260927204251" />
+  <link rel="stylesheet" href="css/fonts-yekan-bakh.css?v=20260927205121" />
+  <link rel="stylesheet" href="css/widget-lab-page.css?v=20260927205121" />
 </head>
-<body class="widget-lab" data-appearance="dark">
+<body class="widget-lab">
   <main class="widget-lab__main">
     <header class="widget-lab__head">
       <h1 class="widget-lab__title">آزمایشگاه ویجت</h1>
@@ -29,8 +29,9 @@
     </p>
 
     <div class="widget-lab__stage" id="widget-stage">
-      <article class="ios-photos-widget" id="photos-widget" aria-label="ویجت Photos — On This Day">
-        <div class="ios-photos-widget__frame">
+      <article class="ios-photos-widget is-pending" id="photos-widget" data-appearance="light" aria-label="ویجت Photos — On This Day">
+        <div class="ios-photos-widget__frame" id="widget-frame">
+          <div class="ios-photos-widget__glass" aria-hidden="true"></div>
           <div class="ios-photos-widget__media" aria-hidden="true">
             <img class="ios-photos-widget__photo is-active" alt="" decoding="async" />
             <img class="ios-photos-widget__photo" alt="" decoding="async" />
@@ -49,6 +50,6 @@
     <p class="widget-lab__status" id="widget-status" aria-live="polite"></p>
   </main>
 
-  <script src="js/widget-lab-page.js?v=20260927204251" defer></script>
+  <script src="js/widget-lab-page.js?v=20260927205121" defer></script>
 </body>
 </html>
