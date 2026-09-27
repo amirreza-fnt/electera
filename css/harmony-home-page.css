@@ -405,12 +405,22 @@ html[data-appearance="dark"] {
   flex-shrink: 0;
 }
 
+.harmony-status-cellular rect {
+  fill: currentColor;
+}
+
 .harmony-status-wifi {
   shape-rendering: geometricPrecision;
 }
 
 .harmony-status-wifi path {
+  fill: none;
+  stroke: currentColor;
+}
+
+.harmony-status-wifi circle {
   fill: currentColor;
+  stroke: none;
 }
 
 /* --- app + fixed bottom dock --- */
