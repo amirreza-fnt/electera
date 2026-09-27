@@ -1,7 +1,5 @@
 /**
  * Harmony Photos widget — deferred load + iOS crossfade carousel.
- * @param {HTMLElement} root .ios-photos-widget element
- * @param {{ onStatus?: (msg: string) => void, appearance?: string }} options
  */
 window.HarmonyPhotosWidget = {
   init(root, options = {}) {
@@ -11,6 +9,7 @@ window.HarmonyPhotosWidget = {
     const MANIFEST = WIDGETS_DIR + "manifest.json";
     const INTERVAL_MS = 5000;
     const CROSSFADE_MS = 720;
+    const INLINE_MANIFEST_ID = "harmony-widget-manifest";
 
     const onStatus = typeof options.onStatus === "function" ? options.onStatus : () => {};
     const photos = () => Array.from(root.querySelectorAll(".ios-photos-widget__photo"));
@@ -20,6 +19,14 @@ window.HarmonyPhotosWidget = {
     let timer = 0;
     let transitioning = false;
     const loaded = new Map();
+
+    const resolveAssetUrl = (path) => {
+      try {
+        return new URL(path, document.baseURI || window.location.href).href;
+      } catch {
+        return path;
+      }
+    };
 
     if (/Firefox/i.test(navigator.userAgent)) {
       root.classList.add("ios-photos-widget--firefox");
@@ -38,13 +45,30 @@ window.HarmonyPhotosWidget = {
         return Number(na) - Number(nb) || a.localeCompare(b);
       });
 
-    const listFromManifest = async () => {
+    const listFromInline = () => {
+      const el = document.getElementById(INLINE_MANIFEST_ID);
+      if (!el || !el.textContent.trim()) return null;
       try {
-        const res = await fetch(MANIFEST, { cache: "no-store" });
+        const data = JSON.parse(el.textContent);
+        if (!Array.isArray(data.images) || !data.images.length) return null;
+        return sortUrls(
+          data.images.map((name) => resolveAssetUrl(WIDGETS_DIR + String(name).replace(/^\//, "")))
+        );
+      } catch {
+        return null;
+      }
+    };
+
+    const listFromManifestFetch = async () => {
+      if (window.location.protocol === "file:") return null;
+      try {
+        const res = await fetch(resolveAssetUrl(MANIFEST), { cache: "no-store" });
         if (!res.ok) return null;
         const data = await res.json();
         if (!Array.isArray(data.images) || !data.images.length) return null;
-        return sortUrls(data.images.map((name) => WIDGETS_DIR + String(name).replace(/^\//, "")));
+        return sortUrls(
+          data.images.map((name) => resolveAssetUrl(WIDGETS_DIR + String(name).replace(/^\//, "")))
+        );
       } catch {
         return null;
       }
@@ -53,28 +77,34 @@ window.HarmonyPhotosWidget = {
     const probeImage = (url) =>
       new Promise((resolve) => {
         const img = new Image();
-        img.onload = () => resolve(true);
-        img.onerror = () => resolve(false);
+        img.onload = () => resolve(url);
+        img.onerror = () => resolve(null);
         img.src = url;
       });
 
     const discoverByScan = async () => {
-      const found = [];
+      const candidates = [];
       const prefixes = ["widget", "widjet"];
       for (const prefix of prefixes) {
         for (let i = 1; i <= 24; i += 1) {
-          const url = `${WIDGETS_DIR}${prefix}-${i}.png`;
-          // eslint-disable-next-line no-await-in-loop
-          if (await probeImage(url)) found.push(url);
+          candidates.push(resolveAssetUrl(`${WIDGETS_DIR}${prefix}-${i}.png`));
         }
       }
-      return sortUrls([...new Set(found)]);
+      const checks = await Promise.all(candidates.map((url) => probeImage(url)));
+      return sortUrls([...new Set(checks.filter(Boolean))]);
     };
 
     const resolveUrlList = async () => {
-      const fromManifest = await listFromManifest();
-      if (fromManifest && fromManifest.length) return fromManifest;
-      return discoverByScan();
+      const inline = listFromInline();
+      if (inline && inline.length) {
+        const verified = await Promise.all(inline.map((url) => probeImage(url)));
+        const ok = verified.filter(Boolean);
+        if (ok.length) return ok;
+      }
+      const scanned = await discoverByScan();
+      if (scanned.length) return scanned;
+      const fetched = await listFromManifestFetch();
+      return fetched || [];
     };
 
     const preloadOne = (url) =>
@@ -176,11 +206,9 @@ window.HarmonyPhotosWidget = {
       scheduleIdlePreload(urls);
     };
 
-    if ("requestIdleCallback" in window) {
-      requestIdleCallback(() => boot(), { timeout: 1200 });
-    } else {
-      window.setTimeout(boot, 16);
-    }
+    requestAnimationFrame(() => {
+      boot();
+    });
 
     return { setAppearance, destroy: () => window.clearInterval(timer) };
   },

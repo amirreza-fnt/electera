@@ -56,6 +56,19 @@
     window.setTimeout(loadWall, 16);
   }
 
+  const clockEl = document.getElementById("harmony-status-clock");
+  const pad2 = (n) => String(n).padStart(2, "0");
+  const tickClock = () => {
+    if (!clockEl) return;
+    const now = new Date();
+    const h = pad2(now.getHours());
+    const m = pad2(now.getMinutes());
+    clockEl.textContent = `${h}:${m}`;
+    clockEl.setAttribute("datetime", now.toISOString());
+  };
+  tickClock();
+  window.setInterval(tickClock, 1000);
+
   const syncThemeButton = (mode) => {
     if (!themeBtn) return;
     const isDark = mode === "dark";
