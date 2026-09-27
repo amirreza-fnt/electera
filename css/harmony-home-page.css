@@ -357,10 +357,6 @@ html[data-appearance="dark"] {
   pointer-events: none;
 }
 
-.harmony-ios-chrome__island {
-  display: none;
-}
-
 .harmony-ios-chrome__status {
   position: absolute;
   top: calc(14px + env(safe-area-inset-top, 0px));
@@ -383,22 +379,6 @@ html[data-appearance="dark"] {
   height: 13px;
   width: auto;
   fill: currentColor;
-}
-
-@media (max-width: 1024px) {
-  .harmony-ios-chrome__island {
-    display: block;
-    position: absolute;
-    top: env(safe-area-inset-top, 0px);
-    left: 50%;
-    z-index: 3;
-    width: min(124px, 32vw);
-    height: 36px;
-    border-radius: 0 0 20px 20px;
-    background: #000;
-    transform: translate3d(-50%, 0, 0);
-    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.04);
-  }
 }
 
 /* --- app + fixed bottom dock --- */
