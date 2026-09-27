@@ -49,6 +49,12 @@
 
 .ios-photos-widget:not(.is-pending) .ios-photos-widget__glass {
   opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.ios-photos-widget.is-pending .ios-photos-widget__photo {
+  opacity: 0 !important;
 }
 
 .ios-photos-widget__media {
@@ -74,7 +80,7 @@
 .ios-photos-widget__photo.is-active.is-visible {
   opacity: 1;
   transform: scale(1);
-  z-index: 1;
+  z-index: 2;
   transition:
     opacity var(--ipw-reveal) var(--ipw-ios-ease),
     transform calc(var(--ipw-interval) + var(--ipw-crossfade)) linear;

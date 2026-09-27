@@ -5,7 +5,7 @@
 <head>
 
   <meta charset="UTF-8" />
-  <meta name="asset-version" content="20260927210149" />
+  <meta name="asset-version" content="20260927210436" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta http-equiv="Cache-Control" content="no-cache, must-revalidate" />
@@ -39,13 +39,13 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,600&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" href="css/fonts-yekan-bakh.css?v=20260927210149" />
+  <link rel="stylesheet" href="css/fonts-yekan-bakh.css?v=20260927210436" />
 
-  <link rel="stylesheet" href="css/ios26-glass.css?v=20260927210149" />
+  <link rel="stylesheet" href="css/ios26-glass.css?v=20260927210436" />
 
-  <link rel="stylesheet" href="css/ios-photos-widget.css?v=20260927210149" />
+  <link rel="stylesheet" href="css/ios-photos-widget.css?v=20260927210436" />
 
-  <link rel="stylesheet" href="css/harmony-home-page.css?v=20260927210149" />
+  <link rel="stylesheet" href="css/harmony-home-page.css?v=20260927210436" />
 
 </head>
 
@@ -122,11 +122,18 @@
         id="harmony-photos-widget"
         data-appearance="light"
         data-widget-images="widget-1.png,widget-2.png,widget-3.png,widget-4.png"
+        data-auto-init="true"
       >
         <div class="ios-photos-widget__frame">
           <div class="ios-photos-widget__glass" aria-hidden="true"></div>
           <div class="ios-photos-widget__media" aria-hidden="true">
-            <img class="ios-photos-widget__photo" alt="" decoding="async" />
+            <img
+              class="ios-photos-widget__photo"
+              src="assets/widgets/widget-1.png"
+              alt=""
+              decoding="async"
+              fetchpriority="high"
+            />
             <img class="ios-photos-widget__photo" alt="" decoding="async" />
           </div>
           <div class="ios-photos-widget__fx" aria-hidden="true"></div>
@@ -135,6 +142,22 @@
       </div>
       </div>
     </section>
+
+    <script>
+      (function () {
+        var root = document.getElementById("harmony-photos-widget");
+        if (!root) return;
+        var img = root.querySelector(".ios-photos-widget__photo");
+        if (!img) return;
+        function reveal() {
+          root.classList.remove("is-pending");
+          img.classList.add("is-active", "is-visible");
+          root.dataset.firstReady = "1";
+        }
+        img.addEventListener("load", reveal, { once: true });
+        if (img.complete && img.naturalWidth > 0) reveal();
+      })();
+    </script>
 
 
 
@@ -248,11 +271,11 @@
 
   <script type="application/json" id="harmony-widget-manifest">{"images":["widget-1.png","widget-2.png","widget-3.png","widget-4.png"]}</script>
 
-  <script src="js/ios26-glass.js?v=20260927210149"></script>
+  <script src="js/ios26-glass.js?v=20260927210436"></script>
 
-  <script src="js/ios-photos-widget.js?v=20260927210149" defer></script>
+  <script src="js/ios-photos-widget.js?v=20260927210436" defer></script>
 
-  <script src="js/harmony-home-page.js?v=20260927210149" defer></script>
+  <script src="js/harmony-home-page.js?v=20260927210436" defer></script>
 
 </body>
 

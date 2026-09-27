@@ -200,7 +200,25 @@ window.HarmonyPhotosWidget = {
         return;
       }
 
+      const firstImg = photos()[0];
+      const htmlReady = root.dataset.firstReady === "1" || root.classList.contains("is-ready");
+      const inlineReady =
+        firstImg &&
+        firstImg.src &&
+        firstImg.classList.contains("is-visible") &&
+        !root.classList.contains("is-pending");
+
       index = 0;
+      if (inlineReady && firstImg.src) {
+        const match = urls.findIndex((u) => firstImg.src.includes(u) || firstImg.getAttribute("src") === u);
+        if (match >= 0) index = match;
+        loaded.set(urls[index], "ready");
+        root.classList.add("is-ready");
+        startCarousel();
+        scheduleIdlePreload(urls);
+        return;
+      }
+
       let firstUrl = urls[0];
       let firstOk = await preloadOne(firstUrl);
       if (!firstOk) {
@@ -217,12 +235,40 @@ window.HarmonyPhotosWidget = {
       if (!firstOk) return;
 
       revealFirst(firstUrl);
+      root.classList.add("is-ready");
       startCarousel();
       scheduleIdlePreload(urls);
     };
 
-    boot();
+    const startWhenReady = () => {
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", boot, { once: true });
+      } else {
+        boot();
+      }
+    };
+
+    startWhenReady();
 
     return { setAppearance, destroy: () => window.clearInterval(timer) };
   },
 };
+
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll(".ios-photos-widget[data-auto-init]").forEach((root) => {
+    if (root.dataset.hpwInited === "1") return;
+    root.dataset.hpwInited = "1";
+    const appearance =
+      root.getAttribute("data-appearance") ||
+      document.body.getAttribute("data-appearance") ||
+      "light";
+    const raw = root.getAttribute("data-widget-images");
+    const images = raw
+      ? raw
+          .split(",")
+          .map((s) => s.trim())
+          .filter(Boolean)
+      : undefined;
+    root.harmonyPhotosWidget = window.HarmonyPhotosWidget.init(root, { appearance, images });
+  });
+});
