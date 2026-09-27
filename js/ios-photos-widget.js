@@ -1,0 +1,187 @@
+/**
+ * Harmony Photos widget — deferred load + iOS crossfade carousel.
+ * @param {HTMLElement} root .ios-photos-widget element
+ * @param {{ onStatus?: (msg: string) => void, appearance?: string }} options
+ */
+window.HarmonyPhotosWidget = {
+  init(root, options = {}) {
+    "use strict";
+
+    const WIDGETS_DIR = "assets/widgets/";
+    const MANIFEST = WIDGETS_DIR + "manifest.json";
+    const INTERVAL_MS = 5000;
+    const CROSSFADE_MS = 720;
+
+    const onStatus = typeof options.onStatus === "function" ? options.onStatus : () => {};
+    const photos = () => Array.from(root.querySelectorAll(".ios-photos-widget__photo"));
+
+    let urls = [];
+    let index = 0;
+    let timer = 0;
+    let transitioning = false;
+    const loaded = new Map();
+
+    if (/Firefox/i.test(navigator.userAgent)) {
+      root.classList.add("ios-photos-widget--firefox");
+    }
+
+    const setAppearance = (mode) => {
+      root.setAttribute("data-appearance", mode === "dark" ? "dark" : "light");
+    };
+
+    if (options.appearance) setAppearance(options.appearance);
+
+    const sortUrls = (list) =>
+      list.slice().sort((a, b) => {
+        const na = (a.match(/(\d+)/) || [0, 0])[1];
+        const nb = (b.match(/(\d+)/) || [0, 0])[1];
+        return Number(na) - Number(nb) || a.localeCompare(b);
+      });
+
+    const listFromManifest = async () => {
+      try {
+        const res = await fetch(MANIFEST, { cache: "no-store" });
+        if (!res.ok) return null;
+        const data = await res.json();
+        if (!Array.isArray(data.images) || !data.images.length) return null;
+        return sortUrls(data.images.map((name) => WIDGETS_DIR + String(name).replace(/^\//, "")));
+      } catch {
+        return null;
+      }
+    };
+
+    const probeImage = (url) =>
+      new Promise((resolve) => {
+        const img = new Image();
+        img.onload = () => resolve(true);
+        img.onerror = () => resolve(false);
+        img.src = url;
+      });
+
+    const discoverByScan = async () => {
+      const found = [];
+      const prefixes = ["widget", "widjet"];
+      for (const prefix of prefixes) {
+        for (let i = 1; i <= 24; i += 1) {
+          const url = `${WIDGETS_DIR}${prefix}-${i}.png`;
+          // eslint-disable-next-line no-await-in-loop
+          if (await probeImage(url)) found.push(url);
+        }
+      }
+      return sortUrls([...new Set(found)]);
+    };
+
+    const resolveUrlList = async () => {
+      const fromManifest = await listFromManifest();
+      if (fromManifest && fromManifest.length) return fromManifest;
+      return discoverByScan();
+    };
+
+    const preloadOne = (url) =>
+      new Promise((resolve) => {
+        if (loaded.get(url) === "ready") {
+          resolve(true);
+          return;
+        }
+        loaded.set(url, "loading");
+        const img = new Image();
+        img.decoding = "async";
+        img.onload = () => {
+          loaded.set(url, "ready");
+          resolve(true);
+        };
+        img.onerror = () => {
+          loaded.set(url, "error");
+          resolve(false);
+        };
+        img.src = url;
+      });
+
+    const preloadSequential = async (list, startIndex = 0) => {
+      for (let i = startIndex; i < list.length; i += 1) {
+        // eslint-disable-next-line no-await-in-loop
+        await preloadOne(list[i]);
+      }
+    };
+
+    const scheduleIdlePreload = (list) => {
+      const run = () => preloadSequential(list, 1);
+      if ("requestIdleCallback" in window) {
+        requestIdleCallback(run, { timeout: 4000 });
+      } else {
+        window.setTimeout(run, 32);
+      }
+    };
+
+    const revealFirst = (url) => {
+      const [a] = photos();
+      if (!a) return;
+      a.src = url;
+      a.className = "ios-photos-widget__photo is-active is-visible";
+      root.classList.remove("is-pending");
+    };
+
+    const crossfadeTo = (nextUrl) => {
+      if (transitioning || loaded.get(nextUrl) !== "ready") return false;
+      const [a, b] = photos();
+      if (!a || !b || !nextUrl) return false;
+
+      transitioning = true;
+      const active = a.classList.contains("is-active") ? a : b;
+      const idle = active === a ? b : a;
+
+      idle.src = nextUrl;
+      idle.className = "ios-photos-widget__photo is-entering is-visible";
+      active.className = "ios-photos-widget__photo is-leaving is-visible";
+
+      window.setTimeout(() => {
+        active.className = "ios-photos-widget__photo";
+        active.removeAttribute("src");
+        idle.className = "ios-photos-widget__photo is-active is-visible";
+        transitioning = false;
+      }, CROSSFADE_MS + 40);
+      return true;
+    };
+
+    const tick = () => {
+      if (urls.length < 2) return;
+      let tries = 0;
+      while (tries < urls.length) {
+        index = (index + 1) % urls.length;
+        const next = urls[index];
+        if (loaded.get(next) === "ready" && crossfadeTo(next)) return;
+        tries += 1;
+      }
+    };
+
+    const startCarousel = () => {
+      window.clearInterval(timer);
+      if (urls.length < 2) return;
+      timer = window.setInterval(tick, INTERVAL_MS);
+    };
+
+    const boot = async () => {
+      urls = await resolveUrlList();
+      if (!urls.length) {
+        onStatus("");
+        return;
+      }
+
+      index = 0;
+      const firstOk = await preloadOne(urls[0]);
+      if (!firstOk) return;
+
+      revealFirst(urls[0]);
+      startCarousel();
+      scheduleIdlePreload(urls);
+    };
+
+    if ("requestIdleCallback" in window) {
+      requestIdleCallback(() => boot(), { timeout: 1200 });
+    } else {
+      window.setTimeout(boot, 16);
+    }
+
+    return { setAppearance, destroy: () => window.clearInterval(timer) };
+  },
+};

@@ -21,6 +21,8 @@
   const settingsBtn = document.getElementById("settings-btn");
   const sheet = document.getElementById("harmony-sheet");
   const sheetBackdrop = document.getElementById("harmony-sheet-backdrop");
+  const photosWidgetEl = document.getElementById("harmony-photos-widget");
+  let photosWidgetCtrl = null;
 
   const hashLinks = nav ? Array.from(nav.querySelectorAll(".harmony-nav-link")) : [];
   const navItems = nav ? Array.from(nav.querySelectorAll(".harmony-nav-item")) : [];
@@ -73,6 +75,8 @@
     const colorScheme = document.getElementById("harmony-color-scheme");
     if (colorScheme) colorScheme.setAttribute("content", next);
     syncThemeButton(next);
+    if (photosWidgetCtrl) photosWidgetCtrl.setAppearance(next);
+    else if (photosWidgetEl) photosWidgetEl.setAttribute("data-appearance", next);
     try {
       localStorage.setItem(STORAGE_APPEARANCE, next);
     } catch {
@@ -100,6 +104,11 @@
   };
 
   mountThemeButton();
+
+  if (photosWidgetEl && window.HarmonyPhotosWidget) {
+    const initial = body.getAttribute("data-appearance") || "light";
+    photosWidgetCtrl = HarmonyPhotosWidget.init(photosWidgetEl, { appearance: initial });
+  }
 
   try {
     const saved = localStorage.getItem(STORAGE_APPEARANCE);

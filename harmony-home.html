@@ -5,7 +5,7 @@
 <head>
 
   <meta charset="UTF-8" />
-  <meta name="asset-version" content="20260927205121" />
+  <meta name="asset-version" content="20260927205420" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta http-equiv="Cache-Control" content="no-cache, must-revalidate" />
@@ -35,11 +35,13 @@
 
   <link rel="preload" href="assets/fonts/yekan-bakh/YekanBakhFaNum-Regular.woff2" as="font" type="font/woff2" crossorigin />
 
-  <link rel="stylesheet" href="css/fonts-yekan-bakh.css?v=20260927205121" />
+  <link rel="stylesheet" href="css/fonts-yekan-bakh.css?v=20260927205420" />
 
-  <link rel="stylesheet" href="css/ios26-glass.css?v=20260927205121" />
+  <link rel="stylesheet" href="css/ios26-glass.css?v=20260927205420" />
 
-  <link rel="stylesheet" href="css/harmony-home-page.css?v=20260927205121" />
+  <link rel="stylesheet" href="css/ios-photos-widget.css?v=20260927205420" />
+
+  <link rel="stylesheet" href="css/harmony-home-page.css?v=20260927205420" />
 
 </head>
 
@@ -107,6 +109,24 @@
     </header>
 
     <h1 class="harmony-page__sr">منوی شیشه‌ای</h1>
+
+    <section class="harmony-page__widget-wrap" aria-label="ویجت تصویر">
+      <div
+        class="ios-photos-widget ios-photos-widget--textless is-pending"
+        id="harmony-photos-widget"
+        data-appearance="light"
+      >
+        <div class="ios-photos-widget__frame">
+          <div class="ios-photos-widget__glass" aria-hidden="true"></div>
+          <div class="ios-photos-widget__media" aria-hidden="true">
+            <img class="ios-photos-widget__photo" alt="" decoding="async" />
+            <img class="ios-photos-widget__photo" alt="" decoding="async" />
+          </div>
+          <div class="ios-photos-widget__fx" aria-hidden="true"></div>
+          <div class="ios-photos-widget__scrim" aria-hidden="true"></div>
+        </div>
+      </div>
+    </section>
 
 
 
@@ -218,9 +238,11 @@
 
 
 
-  <script src="js/ios26-glass.js?v=20260927205121"></script>
+  <script src="js/ios26-glass.js?v=20260927205420"></script>
 
-  <script src="js/harmony-home-page.js?v=20260927205121" defer></script>
+  <script src="js/ios-photos-widget.js?v=20260927205420" defer></script>
+
+  <script src="js/harmony-home-page.js?v=20260927205420" defer></script>
 
 </body>
 

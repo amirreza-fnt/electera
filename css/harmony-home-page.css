@@ -382,6 +382,26 @@ html[data-appearance="dark"] {
 }
 
 /* --- app + fixed bottom dock --- */
+.harmony-page__widget-wrap {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: calc(env(safe-area-inset-top, 0px) + 48px);
+  bottom: calc(clamp(96px, calc(112 * var(--hp-u)), 112px) + max(14px, env(safe-area-inset-bottom, 14px)));
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 16px;
+  box-sizing: border-box;
+  pointer-events: none;
+}
+
+.harmony-page__widget-wrap .ios-photos-widget {
+  --ipw-widget-w: min(var(--hp-panel-w), calc(100vw - 40px));
+  pointer-events: auto;
+}
+
 .harmony-page__app {
   position: relative;
   z-index: 1;
