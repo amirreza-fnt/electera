@@ -403,24 +403,26 @@ html[data-appearance="dark"] {
   width: auto;
   fill: currentColor;
   flex-shrink: 0;
+  overflow: visible;
 }
 
+.harmony-status-wifi,
+.harmony-status-cellular {
+  shape-rendering: geometricPrecision;
+}
+
+.harmony-status-wifi path,
 .harmony-status-cellular rect {
   fill: currentColor;
 }
 
-.harmony-status-wifi {
-  shape-rendering: geometricPrecision;
-}
-
-.harmony-status-wifi path {
-  fill: none;
-  stroke: currentColor;
-}
-
-.harmony-status-wifi circle {
+.harmony-status-battery rect:nth-of-type(2),
+.harmony-status-battery path {
   fill: currentColor;
-  stroke: none;
+}
+
+.harmony-status-battery rect:first-of-type {
+  fill: none;
 }
 
 /* --- app + fixed bottom dock --- */
