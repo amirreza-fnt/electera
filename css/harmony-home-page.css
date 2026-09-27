@@ -402,6 +402,15 @@ html[data-appearance="dark"] {
   height: 13px;
   width: auto;
   fill: currentColor;
+  flex-shrink: 0;
+}
+
+.harmony-status-wifi {
+  shape-rendering: geometricPrecision;
+}
+
+.harmony-status-wifi path {
+  fill: currentColor;
 }
 
 /* --- app + fixed bottom dock --- */
