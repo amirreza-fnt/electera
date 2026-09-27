@@ -167,6 +167,14 @@
   display: none;
 }
 
+.ios-photos-widget--textless .ios-photos-widget__scrim {
+  background: linear-gradient(180deg, transparent 70%, rgba(58, 48, 40, 0.04) 100%);
+}
+
+.ios-photos-widget--textless[data-appearance="dark"] .ios-photos-widget__scrim {
+  background: linear-gradient(180deg, transparent 68%, rgba(26, 24, 22, 0.06) 100%);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .ios-photos-widget__photo,
   .ios-photos-widget__glass {

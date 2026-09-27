@@ -446,6 +446,17 @@ html[data-appearance="dark"] {
   }
 }
 
+.harmony-page__widget-wrap .ios-academy-widget {
+  --agw-size: min(169px, calc(var(--ipw-widget-w, 364px) * 0.46));
+  flex: 0 0 auto;
+}
+
+@media (min-width: 1024px) {
+  .harmony-page__widget-wrap .ios-academy-widget {
+    --agw-size: min(169px, calc((100vw - 72px) / 2 - 14px));
+  }
+}
+
 .harmony-page__widget-wrap .ios-photos-widget {
   --ipw-widget-w: min(var(--hp-panel-w), calc(100vw - 40px));
   pointer-events: auto;

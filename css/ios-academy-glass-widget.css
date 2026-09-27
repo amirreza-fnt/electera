@@ -1,107 +1,79 @@
-/* iOS-style small glass info widget (no fill tint — wallpaper shows through) */
+@import url("ios-liquid-glass-panel.css");
 
 .ios-academy-widget {
-  --agw-size: min(169px, calc((100vw - 80px) / 2));
+  --agw-size: min(169px, calc((100vw - 72px) / 2));
   --agw-r: 22px;
-  --agw-fg: rgba(28, 28, 30, 0.92);
-  --agw-fg-muted: rgba(28, 28, 30, 0.62);
-  --agw-glass-blur: blur(22px) saturate(1.35);
-  --agw-edge: rgba(255, 255, 255, 0.55);
-  --agw-edge-soft: rgba(255, 255, 255, 0.28);
-  --agw-inner-hi: rgba(255, 255, 255, 0.45);
-  --agw-inner-lo: rgba(255, 255, 255, 0.12);
-  --agw-shadow: 0 10px 28px -12px rgba(58, 48, 40, 0.28);
 
   width: var(--agw-size);
   font-family: "Yekan Bakh", ui-rounded, "Segoe UI", system-ui, sans-serif;
 }
 
-.ios-academy-widget[data-appearance="dark"] {
-  --agw-fg: rgba(255, 255, 255, 0.96);
-  --agw-fg-muted: rgba(255, 255, 255, 0.72);
-  --agw-edge: rgba(255, 255, 255, 0.42);
-  --agw-edge-soft: rgba(255, 255, 255, 0.16);
-  --agw-inner-hi: rgba(255, 255, 255, 0.22);
-  --agw-inner-lo: rgba(255, 255, 255, 0.06);
-  --agw-shadow: 0 12px 32px -14px rgba(0, 0, 0, 0.45);
-}
-
 .ios-academy-widget__surface {
-  position: relative;
   width: 100%;
   aspect-ratio: 1;
   border-radius: var(--agw-r);
-  overflow: hidden;
   clip-path: inset(0 round var(--agw-r));
   -webkit-clip-path: inset(0 round var(--agw-r));
   transform: translateZ(0);
-  box-sizing: border-box;
-  background: rgba(255, 255, 255, 0.04);
-  -webkit-backdrop-filter: var(--agw-glass-blur);
-  backdrop-filter: var(--agw-glass-blur);
-  box-shadow:
-    inset 0 0 0 0.5px var(--agw-edge-soft),
-    inset 1px 1px 2px -0.5px var(--agw-inner-hi),
-    inset -1px -1px 2px -0.5px var(--agw-inner-lo),
-    var(--agw-shadow);
-}
-
-.ios-academy-widget__surface::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  pointer-events: none;
-  border: 1px solid var(--agw-edge);
-  opacity: 0.35;
   box-sizing: border-box;
 }
 
 .ios-academy-widget__inner {
   position: relative;
-  z-index: 1;
+  z-index: 3;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   height: 100%;
-  padding: 14px 14px 12px;
+  min-height: 100%;
+  padding: 13px 12px 11px;
   box-sizing: border-box;
-  color: var(--agw-fg);
+  color: rgba(255, 255, 255, 0.96);
   text-align: right;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.35);
+}
+
+.ios-academy-widget[data-appearance="light"] .ios-academy-widget__inner {
+  color: rgba(28, 28, 30, 0.94);
+  text-shadow: 0 1px 6px rgba(255, 255, 255, 0.45);
+}
+
+.ios-academy-widget[data-appearance="dark"] .ios-academy-widget__inner {
+  color: rgba(255, 255, 255, 0.96);
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.4);
 }
 
 .ios-academy-widget__title {
   margin: 0;
-  font-size: clamp(0.68rem, 2.8vw, 0.78rem);
+  font-size: clamp(0.66rem, 2.7vw, 0.76rem);
   font-weight: 700;
-  line-height: 1.35;
-  letter-spacing: -0.01em;
+  line-height: 1.32;
 }
 
-.ios-academy-widget__list {
-  margin: 8px 0 0;
+.ios-academy-widget__grid {
+  margin: 6px 0 0;
   padding: 0;
   list-style: none;
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 7px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px 6px;
+  align-content: center;
 }
 
-.ios-academy-widget__list li {
-  font-size: clamp(0.62rem, 2.5vw, 0.72rem);
+.ios-academy-widget__grid li {
+  font-size: clamp(0.58rem, 2.35vw, 0.68rem);
   font-weight: 600;
-  line-height: 1.25;
-  opacity: 0.94;
+  line-height: 1.22;
+  white-space: nowrap;
 }
 
 .ios-academy-widget__footer {
-  margin: 8px 0 0;
-  font-size: clamp(0.58rem, 2.3vw, 0.65rem);
+  margin: 6px 0 0;
+  font-size: clamp(0.56rem, 2.2vw, 0.63rem);
   font-weight: 500;
-  line-height: 1.35;
-  color: var(--agw-fg-muted);
+  line-height: 1.3;
+  opacity: 0.82;
 }
 
 .ios-academy-widget__caption {
@@ -114,14 +86,17 @@
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
 }
 
+.ios-academy-widget--plain .ios-academy-widget__caption {
+  display: none;
+}
+
 @media (prefers-reduced-transparency: reduce) {
-  .ios-academy-widget__surface {
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
-    background: rgba(255, 255, 255, 0.72);
+  .ios-academy-widget__inner {
+    background: rgba(255, 255, 255, 0.65);
+    border-radius: calc(var(--agw-r) - 2px);
   }
 
-  .ios-academy-widget[data-appearance="dark"] .ios-academy-widget__surface {
-    background: rgba(40, 40, 44, 0.82);
+  .ios-academy-widget[data-appearance="dark"] .ios-academy-widget__inner {
+    background: rgba(32, 32, 36, 0.78);
   }
 }

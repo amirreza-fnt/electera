@@ -22,6 +22,7 @@
   const sheet = document.getElementById("harmony-sheet");
   const sheetBackdrop = document.getElementById("harmony-sheet-backdrop");
   const photosWidgetEl = document.getElementById("harmony-photos-widget");
+  const academyWidgetEl = document.getElementById("harmony-academy-widget");
 
   const hashLinks = nav ? Array.from(nav.querySelectorAll(".harmony-nav-link")) : [];
   const navItems = nav ? Array.from(nav.querySelectorAll(".harmony-nav-item")) : [];
@@ -92,6 +93,9 @@
       if (photosWidgetEl.harmonyPhotosWidget) {
         photosWidgetEl.harmonyPhotosWidget.setAppearance(next);
       }
+    }
+    if (academyWidgetEl) {
+      academyWidgetEl.setAttribute("data-appearance", next);
     }
     try {
       localStorage.setItem(STORAGE_APPEARANCE, next);
