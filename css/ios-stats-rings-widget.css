@@ -181,8 +181,9 @@
 
 /* Same footprint as ios-academy-widget — size from parent strip: (100% - gap) / 2 */
 .ios-widget-square-pair {
-  --ios-square-gap: 14px;
-  --ios-square-r: 22px;
+  container-type: inline-size;
+  --ios-square-gap: clamp(8px, 3.85cqi, 14px);
+  --ios-square-r: clamp(14px, 6.04cqi, 22px);
   --ios-square-size: calc((100% - var(--ios-square-gap)) / 2);
   display: flex;
   flex-wrap: nowrap;
@@ -216,7 +217,7 @@
   height: auto;
   container-type: inline-size;
   padding: 8% 6% 7%;
-  gap: 2px 3px;
+  gap: clamp(1px, 1.1cqi, 3px) clamp(2px, 1.65cqi, 3px);
   border-radius: var(--ios-square-r, 22px);
   clip-path: inset(0 round var(--ios-square-r, 22px));
   -webkit-clip-path: inset(0 round var(--ios-square-r, 22px));
@@ -229,7 +230,7 @@
 }
 
 .ios-stats-dashboard--square .ios-stats-dashboard__ring {
-  width: 54%;
+  width: min(54%, 100%);
   height: auto;
   aspect-ratio: 1;
   max-width: min(72px, 100%);
@@ -238,27 +239,32 @@
 
 .ios-stats-dashboard--square .ios-stats-dashboard__ring .ring-bg,
 .ios-stats-dashboard--square .ios-stats-dashboard__ring .ring-progress {
-  stroke-width: 7;
+  stroke-width: clamp(4px, 4.2cqi, 7px);
 }
 
 .ios-stats-dashboard--square .ios-stats-dashboard__icon {
-  width: clamp(12px, 9cqw, 16px);
-  height: clamp(12px, 9cqw, 16px);
+  width: clamp(11px, 9cqi, 16px);
+  height: clamp(11px, 9cqi, 16px);
   top: 36%;
+  stroke-width: clamp(1.2px, 1.05cqi, 1.8px);
 }
 
 .ios-stats-dashboard--square .ios-stats-dashboard__value {
-  font-size: clamp(8px, 6cqw, 11px);
+  font-size: clamp(7px, 6.2cqi, 11px);
   top: 57%;
 }
 
 .ios-stats-dashboard--square .ios-stats-dashboard__label {
-  font-size: clamp(0.45rem, 3.2cqw, 0.55rem);
-  line-height: 1.15;
+  font-size: clamp(7px, 3.15cqi, 11px);
+  line-height: 1.12;
   max-width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  text-wrap: balance;
+  white-space: normal;
 }
 
 .ios-stats-dashboard--square .ios-stats-dashboard__rim {
@@ -270,12 +276,12 @@
 }
 
 @media (max-width: 360px) {
-  .ios-stats-dashboard {
+  .ios-stats-dashboard:not(.ios-stats-dashboard--square) {
     gap: 18px;
     padding: 22px 18px;
   }
 
-  .ios-stats-dashboard__ring {
+  .ios-stats-dashboard:not(.ios-stats-dashboard--square) .ios-stats-dashboard__ring {
     width: 86px;
     height: 86px;
   }

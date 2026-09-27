@@ -24,6 +24,7 @@
   border-radius: var(--ipw-widget-r);
   overflow: hidden;
   isolation: isolate;
+  container-type: inline-size;
   clip-path: inset(0 round var(--ipw-widget-r));
   -webkit-clip-path: inset(0 round var(--ipw-widget-r));
   transform: translateZ(0);
@@ -157,9 +158,41 @@
   background: linear-gradient(180deg, transparent 42%, rgba(26, 24, 22, 0.12) 68%, rgba(26, 24, 22, 0.52) 100%);
 }
 
-.ios-photos-widget__copy,
+.ios-photos-widget__copy {
+  position: absolute;
+  left: clamp(10px, 4.4cqi, 16px);
+  right: clamp(10px, 4.4cqi, 16px);
+  bottom: clamp(10px, 3.85cqi, 14px);
+  z-index: 5;
+  color: #fff;
+  text-shadow: 0 1px 12px rgba(58, 48, 40, 0.45);
+  pointer-events: none;
+}
+
+.ios-photos-widget__eyebrow {
+  margin: 0;
+  font-size: clamp(11px, 3.57cqi, 13px);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+}
+
+.ios-photos-widget__date {
+  margin: clamp(1px, 0.55cqi, 2px) 0 0;
+  font-size: clamp(11px, 3.57cqi, 13px);
+  font-weight: 400;
+  opacity: 0.92;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+}
+
 .ios-photos-widget__caption {
-  /* lab page only — hidden on harmony via modifier */
+  margin: clamp(6px, 2.2cqi, 8px) 0 0;
+  text-align: center;
+  font-size: clamp(11px, 3.3cqi, 12px);
+  font-weight: 500;
+  opacity: 0.72;
+  color: #3a3a3c;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
 }
 
 .ios-photos-widget--textless .ios-photos-widget__copy,

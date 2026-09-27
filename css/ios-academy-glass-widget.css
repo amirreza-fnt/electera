@@ -11,10 +11,40 @@
 
 .ios-widget-square-pair .ios-academy-widget__inner {
   padding: 8% 7% 7%;
+  gap: clamp(2px, 1.4cqi, 5px);
 }
 
 .ios-widget-square-pair .ios-academy-widget__title {
-  font-size: clamp(0.66rem, 4.2cqi, 0.84rem);
+  font-size: clamp(0.62rem, 4.8cqi, 0.84rem);
+}
+
+.ios-widget-square-pair .ios-academy-widget__grid {
+  gap: clamp(2px, 1.4cqi, 5px) clamp(2px, 1.1cqi, 4px);
+}
+
+.ios-widget-square-pair .ios-academy-widget__course {
+  gap: clamp(2px, 1.4cqi, 5px);
+  padding: clamp(1px, 0.55cqi, 2px) clamp(0px, 0.55cqi, 1px);
+}
+
+.ios-widget-square-pair .ios-academy-widget__course-icon {
+  width: clamp(20px, 16cqi, 28px);
+  height: clamp(20px, 16cqi, 28px);
+  border-radius: clamp(6px, 5.2cqi, var(--agw-icon-r, 9px));
+}
+
+.ios-widget-square-pair .ios-academy-widget__course-icon svg {
+  width: clamp(11px, 9.5cqi, 17px);
+  height: clamp(11px, 9.5cqi, 17px);
+}
+
+.ios-widget-square-pair .ios-academy-widget__course-label {
+  font-size: clamp(0.45rem, 3.8cqi, 0.62rem);
+}
+
+.ios-widget-square-pair .ios-academy-widget__footer {
+  font-size: clamp(0.48rem, 3.6cqi, 0.62rem);
+  padding: clamp(1px, 0.55cqi, 2px);
 }
 
 .ios-widget-square-pair .ios-academy-widget__surface {

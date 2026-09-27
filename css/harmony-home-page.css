@@ -424,7 +424,7 @@ html[data-appearance="dark"] {
   flex-wrap: nowrap;
   align-items: flex-start;
   justify-content: flex-start;
-  gap: 12px;
+  gap: clamp(8px, 2.5vw, 12px);
   --harmony-widget-strip-w: min(var(--hp-panel-w), calc(100vw - 40px));
   width: min(100%, var(--harmony-widget-strip-w));
   max-width: min(100%, var(--harmony-widget-strip-w));

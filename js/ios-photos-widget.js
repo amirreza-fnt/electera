@@ -13,6 +13,19 @@ window.HarmonyPhotosWidget = {
     const onStatus = typeof options.onStatus === "function" ? options.onStatus : () => {};
     const photos = () => Array.from(root.querySelectorAll(".ios-photos-widget__photo"));
 
+    const dateEl = root.querySelector(".ios-photos-widget__date");
+    if (dateEl && !dateEl.textContent.trim()) {
+      try {
+        dateEl.textContent = new Intl.DateTimeFormat("en-US", {
+          month: "long",
+          day: "numeric",
+          year: "numeric",
+        }).format(new Date());
+      } catch {
+        dateEl.textContent = "";
+      }
+    }
+
     let urls = [];
     let index = 0;
     let timer = 0;
