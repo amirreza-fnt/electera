@@ -47,13 +47,14 @@
   transition: opacity var(--ipw-reveal) var(--ipw-ios-ease);
 }
 
-.ios-photos-widget:not(.is-pending) .ios-photos-widget__glass {
+.ios-photos-widget.is-ready .ios-photos-widget__glass {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
 }
 
-.ios-photos-widget.is-pending .ios-photos-widget__photo {
+/* Lab: defer load until JS; harmony: first photo may be visible in HTML */
+.ios-photos-widget.is-pending:not(.is-ready) .ios-photos-widget__photo:not(.is-visible) {
   opacity: 0 !important;
 }
 

@@ -6,7 +6,8 @@ window.HarmonyPhotosWidget = {
     "use strict";
 
     const WIDGETS_DIR = "assets/widgets/";
-    const MANIFEST = WIDGETS_DIR + "manifest.json";
+    const widgetsBaseUrl = new URL(WIDGETS_DIR, document.baseURI).href;
+    const MANIFEST = new URL("manifest.json", widgetsBaseUrl).href;
     const INTERVAL_MS = 5000;
     const CROSSFADE_MS = 720;
     const INLINE_MANIFEST_ID = "harmony-widget-manifest";
@@ -20,7 +21,8 @@ window.HarmonyPhotosWidget = {
     let transitioning = false;
     const loaded = new Map();
 
-    const assetPath = (fileName) => WIDGETS_DIR + String(fileName).replace(/^\//, "");
+    const assetPath = (fileName) =>
+      new URL(String(fileName).replace(/^\//, ""), widgetsBaseUrl).href;
 
     if (/Firefox/i.test(navigator.userAgent)) {
       root.classList.add("ios-photos-widget--firefox");
@@ -93,7 +95,7 @@ window.HarmonyPhotosWidget = {
       const prefixes = ["widget", "widjet"];
       for (const prefix of prefixes) {
         for (let i = 1; i <= 24; i += 1) {
-          candidates.push(`${WIDGETS_DIR}${prefix}-${i}.png`);
+          candidates.push(new URL(`${prefix}-${i}.png`, widgetsBaseUrl).href);
         }
       }
       const checks = await Promise.all(candidates.map((url) => probeImage(url)));
@@ -152,6 +154,7 @@ window.HarmonyPhotosWidget = {
       a.src = url;
       a.className = "ios-photos-widget__photo is-active is-visible";
       root.classList.remove("is-pending");
+      root.classList.add("is-ready");
     };
 
     const crossfadeTo = (nextUrl) => {
@@ -206,7 +209,7 @@ window.HarmonyPhotosWidget = {
         firstImg &&
         firstImg.src &&
         firstImg.classList.contains("is-visible") &&
-        !root.classList.contains("is-pending");
+        (htmlReady || (firstImg.complete && firstImg.naturalWidth > 0));
 
       index = 0;
       if (inlineReady && firstImg.src) {
