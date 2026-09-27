@@ -387,45 +387,17 @@ html[data-appearance="dark"] {
 
 @media (max-width: 1024px) {
   .harmony-ios-chrome__island {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
+    display: block;
     position: absolute;
     top: env(safe-area-inset-top, 0px);
     left: 50%;
     z-index: 3;
     width: min(124px, 32vw);
     height: 36px;
-    padding: 0 12px;
-    box-sizing: border-box;
     border-radius: 0 0 20px 20px;
     background: #000;
     transform: translate3d(-50%, 0, 0);
     box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.04);
-  }
-
-  .harmony-ios-chrome__camera {
-    flex-shrink: 0;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background:
-      radial-gradient(circle at 32% 28%, rgba(80, 120, 180, 0.4) 0%, transparent 42%),
-      radial-gradient(circle at 50% 55%, #060608 0%, #121218 55%, #050505 100%);
-    box-shadow:
-      0 0 0 1px rgba(255, 255, 255, 0.12),
-      inset 0 1px 1px rgba(255, 255, 255, 0.1);
-  }
-
-  .harmony-ios-chrome__speaker {
-    width: min(50px, 13vw);
-    height: 5px;
-    border-radius: 5px;
-    background: #0a0a0c;
-    box-shadow:
-      inset 0 1px 2px rgba(0, 0, 0, 0.9),
-      0 0 0 0.5px rgba(255, 255, 255, 0.06);
   }
 }
 
@@ -461,7 +433,12 @@ html[data-appearance="dark"] {
 }
 
 .harmony-sheet-open .harmony-dock .harmony-ios-surface {
-  transform: translateY(2px);
+  transform: translate3d(0, 2px, 0);
+}
+
+.harmony-sheet-open .harmony-blob,
+.harmony-nav-is-animating .harmony-blob {
+  animation-play-state: paused;
 }
 
 .harmony-glass-nav {
@@ -603,26 +580,22 @@ html[data-appearance="dark"] {
   transform: translate3d(-50%, 36px, 0) scale(0.82);
   transform-origin: bottom center;
   opacity: 0;
-  filter: blur(10px);
   pointer-events: none;
   box-sizing: border-box;
   backface-visibility: hidden;
   transition:
     transform 520ms var(--hp-ios-out),
-    opacity 320ms var(--hp-ios-out),
-    filter 420ms var(--hp-ios-out);
+    opacity 360ms var(--hp-ios-out);
 }
 
 .harmony-sheet.is-open .harmony-sheet__panel {
   transform: translate3d(-50%, 0, 0) scale(1);
   opacity: 1;
-  filter: blur(0);
   pointer-events: auto;
-  will-change: transform, opacity, filter;
+  will-change: transform, opacity;
   transition:
     transform 780ms cubic-bezier(0.34, 1.56, 0.64, 1),
-    opacity 480ms var(--hp-ios-out),
-    filter 620ms var(--hp-ios-out);
+    opacity 480ms var(--hp-ios-out);
 }
 
 .harmony-sheet:not(.is-open) .harmony-sheet__panel {
@@ -681,4 +654,34 @@ html[data-appearance="dark"] {
     animation: none !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* Firefox: fewer repaints (backdrop + drifting blobs are costly) */
+.harmony-page--firefox .harmony-blob {
+  animation: none;
+}
+
+.harmony-page--firefox .harmony-page__grain {
+  mix-blend-mode: normal;
+  opacity: 0.035;
+}
+
+.harmony-page--firefox .harmony-ios-surface {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  background:
+    linear-gradient(150deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.04) 48%, rgba(0, 0, 0, 0.06) 100%),
+    linear-gradient(160deg, var(--harmony-glass-tint), transparent 55%),
+    rgba(255, 255, 255, 0.07);
+}
+
+.harmony-page--firefox[data-appearance="dark"] .harmony-ios-surface {
+  background:
+    linear-gradient(150deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02) 48%, rgba(0, 0, 0, 0.1) 100%),
+    linear-gradient(160deg, var(--harmony-glass-tint), transparent 55%),
+    rgba(12, 12, 14, 0.42);
+}
+
+.harmony-page--firefox .harmony-page__wall {
+  filter: saturate(0.92) brightness(1.03);
 }

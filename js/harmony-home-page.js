@@ -11,6 +11,9 @@
   const BASE_TITLE = "هارمونی";
 
   const body = document.body;
+  if (/Firefox/i.test(navigator.userAgent)) {
+    body.classList.add("harmony-page--firefox");
+  }
   const wallEl = document.getElementById("harmony-wall");
   const nav = document.getElementById("primary-nav");
   const indicator = document.getElementById("nav-indicator");
@@ -176,6 +179,7 @@
   const positionIndicator = () => {
     const target = getIndicatorTarget();
     if (!target) return;
+    nav.classList.add("harmony-nav-is-animating");
     const navRect = nav.getBoundingClientRect();
     const rect = target.getBoundingClientRect();
 
@@ -189,6 +193,10 @@
     indicator.style.width = `${w}px`;
     indicator.style.height = `${h}px`;
     indicator.style.transform = `translate3d(${x.toFixed(2)}px, ${y.toFixed(2)}px, 0)`;
+    window.clearTimeout(nav._hpAnimTimer);
+    nav._hpAnimTimer = window.setTimeout(() => {
+      nav.classList.remove("harmony-nav-is-animating");
+    }, 480);
   };
 
   const scheduleIndicator = () => {
