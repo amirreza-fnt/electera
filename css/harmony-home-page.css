@@ -357,6 +357,26 @@ html[data-appearance="dark"] {
   pointer-events: none;
 }
 
+.harmony-ios-chrome__clock {
+  position: absolute;
+  top: calc(13px + env(safe-area-inset-top, 0px));
+  left: max(22px, env(safe-area-inset-left, 22px));
+  z-index: 2;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", system-ui, sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  direction: ltr;
+  color: rgba(28, 28, 30, 0.92);
+}
+
+.harmony-page[data-appearance="dark"] .harmony-ios-chrome__clock {
+  color: rgba(255, 255, 255, 0.96);
+}
+
 .harmony-ios-chrome__status {
   position: absolute;
   top: calc(14px + env(safe-area-inset-top, 0px));
