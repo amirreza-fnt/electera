@@ -1,0 +1,32 @@
+{
+  "apps": [
+    {
+      "id": "intro",
+      "label": "معرفی",
+      "description": "ویدیوی معرفی آموزشگاه",
+      "cover": "intro.jpg",
+      "type": "video"
+    },
+    {
+      "id": "class",
+      "label": "کلاس",
+      "description": "فیلم کلاس‌ها و کارگاه",
+      "cover": "class.jpg",
+      "type": "video"
+    },
+    {
+      "id": "ceremony",
+      "label": "مراسم",
+      "description": "تصاویر مراسم و جشن",
+      "cover": "ceremony.jpg",
+      "type": "gallery"
+    },
+    {
+      "id": "cert",
+      "label": "مدرک",
+      "description": "گواهینامه‌ها و مدارک",
+      "cover": "cert.jpg",
+      "type": "gallery"
+    }
+  ]
+}
