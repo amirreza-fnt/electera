@@ -25,12 +25,26 @@
   overflow: hidden;
   isolation: isolate;
   container-type: inline-size;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: minmax(0, 1fr);
   clip-path: inset(0 round var(--ipw-widget-r));
   -webkit-clip-path: inset(0 round var(--ipw-widget-r));
   transform: translateZ(0);
   box-shadow:
     0 2px 6px rgba(58, 48, 40, 0.12),
     0 12px 32px rgba(58, 48, 40, 0.14);
+}
+
+.ios-photos-widget__frame > .ios-photos-widget__glass,
+.ios-photos-widget__frame > .ios-photos-widget__media,
+.ios-photos-widget__frame > .ios-photos-widget__fx,
+.ios-photos-widget__frame > .ios-photos-widget__scrim,
+.ios-photos-widget__frame > .ios-photos-widget__copy {
+  grid-row: 1;
+  grid-column: 1;
+  min-width: 0;
+  min-height: 0;
 }
 
 .ios-photos-widget__glass {
@@ -159,11 +173,13 @@
 }
 
 .ios-photos-widget__copy {
-  position: absolute;
-  left: clamp(10px, 4.4cqi, 16px);
-  right: clamp(10px, 4.4cqi, 16px);
-  bottom: clamp(10px, 3.85cqi, 14px);
+  position: relative;
+  align-self: end;
+  justify-self: stretch;
   z-index: 5;
+  margin: 0;
+  padding: 14px 16px;
+  box-sizing: border-box;
   color: #fff;
   text-shadow: 0 1px 12px rgba(58, 48, 40, 0.45);
   pointer-events: none;
@@ -171,18 +187,33 @@
 
 .ios-photos-widget__eyebrow {
   margin: 0;
-  font-size: clamp(11px, 3.57cqi, 13px);
+  font-size: 13px;
   font-weight: 700;
   letter-spacing: 0.04em;
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
 }
 
 .ios-photos-widget__date {
-  margin: clamp(1px, 0.55cqi, 2px) 0 0;
-  font-size: clamp(11px, 3.57cqi, 13px);
+  margin: 2px 0 0;
+  font-size: 13px;
   font-weight: 400;
   opacity: 0.92;
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+}
+
+@container (min-width: 1px) {
+  .ios-photos-widget__copy {
+    padding: clamp(10px, 3.85cqi, 14px) clamp(10px, 4.4cqi, 16px);
+  }
+
+  .ios-photos-widget__eyebrow,
+  .ios-photos-widget__date {
+    font-size: clamp(11px, 3.57cqi, 13px);
+  }
+
+  .ios-photos-widget__date {
+    margin-top: clamp(1px, 0.55cqi, 2px);
+  }
 }
 
 .ios-photos-widget__caption {

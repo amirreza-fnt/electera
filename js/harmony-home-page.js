@@ -160,11 +160,13 @@
     if (open) {
       activeNav = "settings";
       hashLinks.forEach((l) => l.removeAttribute("aria-current"));
+      if (nav && indicator) scheduleIndicatorStable();
     } else if (activeNav === "settings") {
       activeNav = routeFromHash();
       applyNavState(activeNav);
+    } else if (nav && indicator) {
+      scheduleIndicatorStable();
     }
-    requestAnimationFrame(scheduleIndicator);
   };
 
   if (settingsBtn) {
@@ -209,9 +211,9 @@
     const panelW = panel ? panel.getBoundingClientRect().width : DESIGN_W;
     const u = Math.min(1, panelW / DESIGN_W);
     const navH = nav.getBoundingClientRect().height;
-    /* نسبت به ارتفاع منو + کمی u — نه خیلی ریز موبایل، نه 85 ثابت */
+    if (!navH || navH < 40) return Math.round(INDICATOR_DESIGN * u);
     const size = navH * (0.54 + 0.36 * u);
-    return Math.round(Math.min(INDICATOR_DESIGN, Math.max(navH * 0.5, size)));
+    return Math.round(Math.min(INDICATOR_DESIGN, Math.max(navH * 0.48, size)));
   };
 
   const positionIndicator = () => {
@@ -220,17 +222,17 @@
     nav.classList.add("harmony-nav-is-animating");
     const navRect = nav.getBoundingClientRect();
     const rect = target.getBoundingClientRect();
+    if (!navRect.width || !navRect.height) return;
 
-    const size = indicatorSize();
-    const w = size;
-    const h = size;
+    const tabH = indicatorSize();
+    const tabW = Math.min(rect.width - 6, Math.max(tabH + 8, tabH * 1.35));
 
-    const x = rect.left - navRect.left - nav.clientLeft + (rect.width - w) / 2;
-    const y = rect.top - navRect.top - nav.clientTop + (rect.height - h) / 2;
+    const x = rect.left - navRect.left - nav.clientLeft + (rect.width - tabW) / 2;
+    const y = rect.top - navRect.top - nav.clientTop + (rect.height - tabH) / 2;
 
-    indicator.style.width = `${w}px`;
-    indicator.style.height = `${h}px`;
-    indicator.style.transform = `translate3d(${x.toFixed(2)}px, ${y.toFixed(2)}px, 0)`;
+    indicator.style.width = `${Math.round(tabW)}px`;
+    indicator.style.height = `${Math.round(tabH)}px`;
+    indicator.style.transform = `translate3d(${Math.round(x)}px, ${Math.round(y)}px, 0)`;
     window.clearTimeout(nav._hpAnimTimer);
     nav._hpAnimTimer = window.setTimeout(() => {
       nav.classList.remove("harmony-nav-is-animating");
@@ -245,6 +247,13 @@
     });
   };
 
+  const scheduleIndicatorStable = () => {
+    scheduleIndicator();
+    requestAnimationFrame(scheduleIndicator);
+    window.setTimeout(scheduleIndicator, 120);
+    window.setTimeout(scheduleIndicator, 520);
+  };
+
   const applyNavState = (route) => {
     activeNav = route;
     hashLinks.forEach((link) => {
@@ -256,7 +265,7 @@
       if (!sheetOpen) settingsBtn.setAttribute("aria-expanded", "false");
     }
     document.title = `${BASE_TITLE} — ${labelForRoute(route)}`;
-    positionIndicator();
+    scheduleIndicatorStable();
   };
 
   window.addEventListener("hashchange", () => {
@@ -301,7 +310,7 @@
   });
 
   if ("ResizeObserver" in window) {
-    const ro = new ResizeObserver(() => scheduleIndicator());
+    const ro = new ResizeObserver(() => scheduleIndicatorStable());
     ro.observe(nav);
     const panel = nav.closest(".harmony-glass-panel");
     if (panel) ro.observe(panel);
@@ -311,7 +320,7 @@
 
   applyNavState(routeFromHash());
   requestAnimationFrame(() => {
-    positionIndicator();
+    scheduleIndicatorStable();
     requestAnimationFrame(() => indicator.classList.add("is-ready"));
   });
 })();
