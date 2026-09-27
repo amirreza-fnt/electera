@@ -1,6 +1,7 @@
 /* Widget lab page chrome — component styles in ios-photos-widget.css */
 @import url("ios-photos-widget.css");
 @import url("ios-academy-glass-widget.css");
+@import url("ios-stats-rings-widget.css");
 
 .widget-lab {
   --ipw-widget-w: min(364px, calc(100vw - 48px));
@@ -15,7 +16,7 @@
 }
 
 .widget-lab__main {
-  max-width: 480px;
+  max-width: min(720px, 100%);
   margin: 0 auto;
   padding: max(20px, env(safe-area-inset-top)) 20px max(28px, env(safe-area-inset-bottom));
   box-sizing: border-box;
@@ -86,6 +87,15 @@
   flex-direction: column;
   align-items: center;
   max-width: 100%;
+}
+
+.widget-lab__stage-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 22px 18px;
+  width: 100%;
 }
 
 .widget-lab__stage-label {

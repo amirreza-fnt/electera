@@ -10,8 +10,8 @@
   <meta name="theme-color" content="#ebe3d9" />
   <meta name="color-scheme" content="light" />
 
-  <link rel="stylesheet" href="css/fonts-yekan-bakh.css?v=20260927215544" />
-  <link rel="stylesheet" href="css/widget-lab-page.css?v=20260927215544" />
+  <link rel="stylesheet" href="css/fonts-yekan-bakh.css?v=20260927220104" />
+  <link rel="stylesheet" href="css/widget-lab-page.css?v=20260927220104" />
 </head>
 <body class="widget-lab">
   <main class="widget-lab__main">
@@ -49,6 +49,7 @@
       </article>
       </div>
 
+      <div class="widget-lab__stage-row">
       <div class="widget-lab__stage-block">
         <p class="widget-lab__stage-label">آموزشگاه</p>
         <article
@@ -97,13 +98,88 @@
           <p class="ios-academy-widget__caption">Electera</p>
         </article>
       </div>
+
+      <div class="widget-lab__stage-block">
+        <p class="widget-lab__stage-label">آمار</p>
+        <div class="ios-stats-dashboard-wrap">
+          <div class="ios-stats-dashboard" id="stats-rings-widget" aria-label="ویجت آمار">
+            <div class="ios-stats-dashboard__refract" aria-hidden="true"></div>
+            <div class="ios-stats-dashboard__tint" aria-hidden="true"></div>
+            <div class="ios-stats-dashboard__spec-top" aria-hidden="true"></div>
+            <div class="ios-stats-dashboard__rim" aria-hidden="true"></div>
+            <div class="ios-stats-dashboard__border" aria-hidden="true"></div>
+
+            <div class="ios-stats-dashboard__cell">
+              <div class="ios-stats-dashboard__ring">
+                <svg class="ring" viewBox="0 0 100 100" aria-hidden="true">
+                  <circle class="ring-bg" cx="50" cy="50" r="40"></circle>
+                  <circle class="ring-progress" cx="50" cy="50" r="40" data-ring-percent="81"></circle>
+                </svg>
+                <svg class="ios-stats-dashboard__icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                </svg>
+                <span class="ios-stats-dashboard__value">81%</span>
+              </div>
+              <p class="ios-stats-dashboard__label">ظرفیت</p>
+            </div>
+
+            <div class="ios-stats-dashboard__cell">
+              <div class="ios-stats-dashboard__ring">
+                <svg class="ring" viewBox="0 0 100 100" aria-hidden="true">
+                  <circle class="ring-bg" cx="50" cy="50" r="40"></circle>
+                  <circle class="ring-progress" cx="50" cy="50" r="40" data-ring-percent="39"></circle>
+                </svg>
+                <svg class="ios-stats-dashboard__icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M22 19a2 2 0 0 1-2 18H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+                </svg>
+                <span class="ios-stats-dashboard__value">+39</span>
+              </div>
+              <p class="ios-stats-dashboard__label">تعداد پروژه‌ها</p>
+            </div>
+
+            <div class="ios-stats-dashboard__cell">
+              <div class="ios-stats-dashboard__ring">
+                <svg class="ring" viewBox="0 0 100 100" aria-hidden="true">
+                  <circle class="ring-bg" cx="50" cy="50" r="40"></circle>
+                  <circle class="ring-progress" cx="50" cy="50" r="40" data-ring-percent="84"></circle>
+                </svg>
+                <svg class="ios-stats-dashboard__icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="9" cy="7" r="4"></circle>
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
+                <span class="ios-stats-dashboard__value">+284</span>
+              </div>
+              <p class="ios-stats-dashboard__label">تعداد هنرجوها</p>
+            </div>
+
+            <div class="ios-stats-dashboard__cell">
+              <div class="ios-stats-dashboard__ring">
+                <svg class="ring" viewBox="0 0 100 100" aria-hidden="true">
+                  <circle class="ring-bg" cx="50" cy="50" r="40"></circle>
+                  <circle class="ring-progress" cx="50" cy="50" r="40" data-ring-percent="100"></circle>
+                </svg>
+                <svg class="ios-stats-dashboard__icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                  <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                </svg>
+                <span class="ios-stats-dashboard__value">100%</span>
+              </div>
+              <p class="ios-stats-dashboard__label">نرخ موفقیت</p>
+            </div>
+          </div>
+          <p class="ios-stats-dashboard-wrap__caption">Stats</p>
+        </div>
+      </div>
+      </div>
     </div>
 
     <p class="widget-lab__status" id="widget-status" aria-live="polite"></p>
   </main>
 
-  <script src="js/ios-photos-widget.js?v=20260927215544" defer></script>
-  <script src="js/ios-liquid-glass-panel.js?v=20260927215544" defer></script>
-  <script src="js/widget-lab-page.js?v=20260927215544" defer></script>
+  <script src="js/ios-photos-widget.js?v=20260927220104" defer></script>
+  <script src="js/ios-liquid-glass-panel.js?v=20260927220104" defer></script>
+  <script src="js/ios-stats-rings-widget.js?v=20260927220104" defer></script>
+  <script src="js/widget-lab-page.js?v=20260927220104" defer></script>
 </body>
 </html>
