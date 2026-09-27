@@ -120,7 +120,10 @@
 
   if (photosWidgetEl && window.HarmonyPhotosWidget) {
     const initial = body.getAttribute("data-appearance") || "light";
-    photosWidgetCtrl = HarmonyPhotosWidget.init(photosWidgetEl, { appearance: initial });
+    photosWidgetCtrl = HarmonyPhotosWidget.init(photosWidgetEl, {
+      appearance: initial,
+      images: ["widget-1.png", "widget-2.png", "widget-3.png", "widget-4.png"],
+    });
   }
 
   try {

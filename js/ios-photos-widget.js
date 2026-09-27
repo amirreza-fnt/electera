@@ -20,13 +20,7 @@ window.HarmonyPhotosWidget = {
     let transitioning = false;
     const loaded = new Map();
 
-    const resolveAssetUrl = (path) => {
-      try {
-        return new URL(path, document.baseURI || window.location.href).href;
-      } catch {
-        return path;
-      }
-    };
+    const assetPath = (fileName) => WIDGETS_DIR + String(fileName).replace(/^\//, "");
 
     if (/Firefox/i.test(navigator.userAgent)) {
       root.classList.add("ios-photos-widget--firefox");
@@ -45,15 +39,29 @@ window.HarmonyPhotosWidget = {
         return Number(na) - Number(nb) || a.localeCompare(b);
       });
 
+    const pathsFromNames = (names) =>
+      sortUrls(names.filter(Boolean).map((name) => assetPath(name)));
+
+    const listFromOptions = () => {
+      if (Array.isArray(options.images) && options.images.length) {
+        return pathsFromNames(options.images);
+      }
+      return null;
+    };
+
+    const listFromDataAttr = () => {
+      const raw = root.getAttribute("data-widget-images");
+      if (!raw) return null;
+      return pathsFromNames(raw.split(",").map((s) => s.trim()));
+    };
+
     const listFromInline = () => {
       const el = document.getElementById(INLINE_MANIFEST_ID);
       if (!el || !el.textContent.trim()) return null;
       try {
         const data = JSON.parse(el.textContent);
         if (!Array.isArray(data.images) || !data.images.length) return null;
-        return sortUrls(
-          data.images.map((name) => resolveAssetUrl(WIDGETS_DIR + String(name).replace(/^\//, "")))
-        );
+        return pathsFromNames(data.images);
       } catch {
         return null;
       }
@@ -62,13 +70,11 @@ window.HarmonyPhotosWidget = {
     const listFromManifestFetch = async () => {
       if (window.location.protocol === "file:") return null;
       try {
-        const res = await fetch(resolveAssetUrl(MANIFEST), { cache: "no-store" });
+        const res = await fetch(MANIFEST, { cache: "no-store" });
         if (!res.ok) return null;
         const data = await res.json();
         if (!Array.isArray(data.images) || !data.images.length) return null;
-        return sortUrls(
-          data.images.map((name) => resolveAssetUrl(WIDGETS_DIR + String(name).replace(/^\//, "")))
-        );
+        return pathsFromNames(data.images);
       } catch {
         return null;
       }
@@ -87,7 +93,7 @@ window.HarmonyPhotosWidget = {
       const prefixes = ["widget", "widjet"];
       for (const prefix of prefixes) {
         for (let i = 1; i <= 24; i += 1) {
-          candidates.push(resolveAssetUrl(`${WIDGETS_DIR}${prefix}-${i}.png`));
+          candidates.push(`${WIDGETS_DIR}${prefix}-${i}.png`);
         }
       }
       const checks = await Promise.all(candidates.map((url) => probeImage(url)));
@@ -95,12 +101,9 @@ window.HarmonyPhotosWidget = {
     };
 
     const resolveUrlList = async () => {
-      const inline = listFromInline();
-      if (inline && inline.length) {
-        const verified = await Promise.all(inline.map((url) => probeImage(url)));
-        const ok = verified.filter(Boolean);
-        if (ok.length) return ok;
-      }
+      const direct = listFromOptions() || listFromDataAttr() || listFromInline();
+      if (direct && direct.length) return direct;
+
       const scanned = await discoverByScan();
       if (scanned.length) return scanned;
       const fetched = await listFromManifestFetch();
@@ -198,17 +201,27 @@ window.HarmonyPhotosWidget = {
       }
 
       index = 0;
-      const firstOk = await preloadOne(urls[0]);
+      let firstUrl = urls[0];
+      let firstOk = await preloadOne(firstUrl);
+      if (!firstOk) {
+        for (let i = 1; i < urls.length; i += 1) {
+          // eslint-disable-next-line no-await-in-loop
+          if (await preloadOne(urls[i])) {
+            firstUrl = urls[i];
+            index = i;
+            firstOk = true;
+            break;
+          }
+        }
+      }
       if (!firstOk) return;
 
-      revealFirst(urls[0]);
+      revealFirst(firstUrl);
       startCarousel();
       scheduleIdlePreload(urls);
     };
 
-    requestAnimationFrame(() => {
-      boot();
-    });
+    boot();
 
     return { setAppearance, destroy: () => window.clearInterval(timer) };
   },
