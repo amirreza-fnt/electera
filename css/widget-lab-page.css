@@ -104,6 +104,16 @@
   opacity: 0.55;
 }
 
+.widget-lab__stage-block--wide {
+  width: 100%;
+  max-width: 100%;
+  align-items: center;
+}
+
+.widget-lab__stage-block--wide .ios-widget-square-pair {
+  justify-content: center;
+}
+
 .widget-lab__status {
   margin: 18px 0 0;
   text-align: center;

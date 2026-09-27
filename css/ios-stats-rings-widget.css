@@ -175,6 +175,97 @@
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
 }
 
+.ios-stats-dashboard-wrap--plain .ios-stats-dashboard-wrap__caption {
+  display: none;
+}
+
+/* Same footprint as ios-academy-widget (small iOS square widget) */
+.ios-widget-square-pair {
+  --ios-square-size: min(169px, calc((100vw - 56px) / 2 - 7px));
+  --ios-square-r: 22px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 14px;
+  width: 100%;
+}
+
+.ios-widget-square-pair .ios-academy-widget {
+  width: var(--ios-square-size);
+  --agw-size: var(--ios-square-size);
+  --agw-r: var(--ios-square-r);
+}
+
+.ios-widget-square-pair .ios-stats-dashboard-wrap {
+  width: var(--ios-square-size);
+  flex: 0 0 auto;
+  pointer-events: auto;
+}
+
+.ios-stats-dashboard--square {
+  width: 100%;
+  aspect-ratio: 1;
+  height: auto;
+  padding: 9px 7px 8px;
+  gap: 2px 4px;
+  border-radius: var(--ios-square-r, 22px);
+  clip-path: inset(0 round var(--ios-square-r, 22px));
+  -webkit-clip-path: inset(0 round var(--ios-square-r, 22px));
+}
+
+.ios-stats-dashboard--square .ios-stats-dashboard__cell {
+  gap: 1px;
+  min-height: 0;
+  justify-content: center;
+}
+
+.ios-stats-dashboard--square .ios-stats-dashboard__ring {
+  width: min(100%, 54px);
+  height: min(100%, 54px);
+  max-width: 54px;
+  max-height: 54px;
+}
+
+.ios-stats-dashboard--square .ios-stats-dashboard__ring .ring-bg,
+.ios-stats-dashboard--square .ios-stats-dashboard__ring .ring-progress {
+  stroke-width: 7;
+}
+
+.ios-stats-dashboard--square .ios-stats-dashboard__icon {
+  width: 14px;
+  height: 14px;
+  top: 36%;
+}
+
+.ios-stats-dashboard--square .ios-stats-dashboard__value {
+  font-size: 9px;
+  top: 57%;
+}
+
+.ios-stats-dashboard--square .ios-stats-dashboard__label {
+  font-size: 0.48rem;
+  line-height: 1.15;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ios-stats-dashboard--square .ios-stats-dashboard__rim {
+  box-shadow:
+    inset 0 -1px 1px rgba(255, 255, 255, 0.1),
+    inset 0 6px 14px rgba(0, 0, 0, 0.14),
+    0 8px 22px rgba(0, 0, 0, 0.18),
+    0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+@media (min-width: 1024px) {
+  .harmony-page__widget-wrap .ios-widget-square-pair {
+    --ios-square-size: min(169px, calc((100vw - 72px) / 2 - 14px));
+  }
+}
+
 @media (max-width: 360px) {
   .ios-stats-dashboard {
     gap: 18px;

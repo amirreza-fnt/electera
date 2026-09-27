@@ -5,7 +5,7 @@
 <head>
 
   <meta charset="UTF-8" />
-  <meta name="asset-version" content="20260927220104" />
+  <meta name="asset-version" content="20260927220334" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta http-equiv="Cache-Control" content="no-cache, must-revalidate" />
@@ -39,15 +39,17 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,600&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" href="css/fonts-yekan-bakh.css?v=20260927220104" />
+  <link rel="stylesheet" href="css/fonts-yekan-bakh.css?v=20260927220334" />
 
-  <link rel="stylesheet" href="css/ios26-glass.css?v=20260927220104" />
+  <link rel="stylesheet" href="css/ios26-glass.css?v=20260927220334" />
 
-  <link rel="stylesheet" href="css/ios-photos-widget.css?v=20260927220104" />
+  <link rel="stylesheet" href="css/ios-photos-widget.css?v=20260927220334" />
 
-  <link rel="stylesheet" href="css/ios-academy-glass-widget.css?v=20260927220104" />
+  <link rel="stylesheet" href="css/ios-academy-glass-widget.css?v=20260927220334" />
 
-  <link rel="stylesheet" href="css/harmony-home-page.css?v=20260927220104" />
+  <link rel="stylesheet" href="css/ios-stats-rings-widget.css?v=20260927220334" />
+
+  <link rel="stylesheet" href="css/harmony-home-page.css?v=20260927220334" />
 
 </head>
 
@@ -143,6 +145,7 @@
         </div>
       </div>
 
+      <div class="ios-widget-square-pair harmony-page__widget-square-row">
       <article
         class="ios-academy-widget ios-academy-widget--plain"
         id="harmony-academy-widget"
@@ -187,6 +190,76 @@
           </div>
         </div>
       </article>
+
+      <div class="ios-stats-dashboard-wrap ios-stats-dashboard-wrap--plain">
+        <div class="ios-stats-dashboard ios-stats-dashboard--square" id="harmony-stats-rings-widget" aria-label="ویجت آمار">
+          <div class="ios-stats-dashboard__refract" aria-hidden="true"></div>
+          <div class="ios-stats-dashboard__tint" aria-hidden="true"></div>
+          <div class="ios-stats-dashboard__spec-top" aria-hidden="true"></div>
+          <div class="ios-stats-dashboard__rim" aria-hidden="true"></div>
+          <div class="ios-stats-dashboard__border" aria-hidden="true"></div>
+
+          <div class="ios-stats-dashboard__cell">
+            <div class="ios-stats-dashboard__ring">
+              <svg class="ring" viewBox="0 0 100 100" aria-hidden="true">
+                <circle class="ring-bg" cx="50" cy="50" r="40"></circle>
+                <circle class="ring-progress" cx="50" cy="50" r="40" data-ring-percent="81"></circle>
+              </svg>
+              <svg class="ios-stats-dashboard__icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+              </svg>
+              <span class="ios-stats-dashboard__value">81%</span>
+            </div>
+            <p class="ios-stats-dashboard__label">ظرفیت</p>
+          </div>
+
+          <div class="ios-stats-dashboard__cell">
+            <div class="ios-stats-dashboard__ring">
+              <svg class="ring" viewBox="0 0 100 100" aria-hidden="true">
+                <circle class="ring-bg" cx="50" cy="50" r="40"></circle>
+                <circle class="ring-progress" cx="50" cy="50" r="40" data-ring-percent="39"></circle>
+              </svg>
+              <svg class="ios-stats-dashboard__icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M22 19a2 2 0 0 1-2 18H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+              </svg>
+              <span class="ios-stats-dashboard__value">+39</span>
+            </div>
+            <p class="ios-stats-dashboard__label">تعداد پروژه‌ها</p>
+          </div>
+
+          <div class="ios-stats-dashboard__cell">
+            <div class="ios-stats-dashboard__ring">
+              <svg class="ring" viewBox="0 0 100 100" aria-hidden="true">
+                <circle class="ring-bg" cx="50" cy="50" r="40"></circle>
+                <circle class="ring-progress" cx="50" cy="50" r="40" data-ring-percent="84"></circle>
+              </svg>
+              <svg class="ios-stats-dashboard__icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"></path>
+              </svg>
+              <span class="ios-stats-dashboard__value">+284</span>
+            </div>
+            <p class="ios-stats-dashboard__label">تعداد هنرجوها</p>
+          </div>
+
+          <div class="ios-stats-dashboard__cell">
+            <div class="ios-stats-dashboard__ring">
+              <svg class="ring" viewBox="0 0 100 100" aria-hidden="true">
+                <circle class="ring-bg" cx="50" cy="50" r="40"></circle>
+                <circle class="ring-progress" cx="50" cy="50" r="40" data-ring-percent="100"></circle>
+              </svg>
+              <svg class="ios-stats-dashboard__icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+              </svg>
+              <span class="ios-stats-dashboard__value">100%</span>
+            </div>
+            <p class="ios-stats-dashboard__label">نرخ موفقیت</p>
+          </div>
+        </div>
+      </div>
+      </div>
       </div>
     </section>
 
@@ -321,13 +394,15 @@
 
   <script type="application/json" id="harmony-widget-manifest">{"images":["widget-1.png","widget-2.png","widget-3.png","widget-4.png"]}</script>
 
-  <script src="js/ios26-glass.js?v=20260927220104"></script>
+  <script src="js/ios26-glass.js?v=20260927220334"></script>
 
-  <script src="js/ios-photos-widget.js?v=20260927220104" defer></script>
+  <script src="js/ios-photos-widget.js?v=20260927220334" defer></script>
 
-  <script src="js/ios-liquid-glass-panel.js?v=20260927220104" defer></script>
+  <script src="js/ios-liquid-glass-panel.js?v=20260927220334" defer></script>
 
-  <script src="js/harmony-home-page.js?v=20260927220104" defer></script>
+  <script src="js/ios-stats-rings-widget.js?v=20260927220334" defer></script>
+
+  <script src="js/harmony-home-page.js?v=20260927220334" defer></script>
 
 </body>
 

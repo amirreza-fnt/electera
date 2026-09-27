@@ -448,8 +448,26 @@ html[data-appearance="dark"] {
 }
 
 .harmony-page__widget-wrap .ios-academy-widget {
-  --agw-size: min(169px, calc(var(--ipw-widget-w, 364px) * 0.46));
   flex: 0 0 auto;
+  pointer-events: auto;
+}
+
+.harmony-page__widget-square-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 14px;
+  width: 100%;
+  pointer-events: none;
+}
+
+.harmony-page__widget-square-row .ios-widget-square-pair {
+  pointer-events: none;
+}
+
+.harmony-page__widget-square-row .ios-academy-widget,
+.harmony-page__widget-square-row .ios-stats-dashboard-wrap {
   pointer-events: auto;
 }
 
