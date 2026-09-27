@@ -17,7 +17,7 @@
   --hp-warm-shadow: rgba(58, 48, 40, 0.42);
   --hp-warm-plum: rgba(110, 88, 72, 0.35);
 
-  --hp-panel-w: min(640px, calc(100vw - 32px));
+  --hp-panel-w: min(640px, calc(100dvw - 32px));
   --hp-u: calc(var(--hp-panel-w) / 640);
   --hp-indicator: calc(85 * var(--hp-u));
   --hp-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -425,9 +425,9 @@ html[data-appearance="dark"] {
   align-items: flex-start;
   justify-content: flex-start;
   gap: clamp(8px, 2.5vw, 12px);
-  --harmony-widget-strip-w: min(var(--hp-panel-w), calc(100vw - 40px));
-  width: min(100%, var(--harmony-widget-strip-w));
-  max-width: min(100%, var(--harmony-widget-strip-w));
+  --harmony-widget-strip-w: min(var(--hp-panel-w), calc(100dvw - 40px));
+  width: 100%;
+  max-width: var(--harmony-widget-strip-w);
   box-sizing: border-box;
   pointer-events: none;
 }
@@ -457,9 +457,9 @@ html[data-appearance="dark"] {
 }
 
 .harmony-page__widget-wrap .ios-photos-widget {
-  --ipw-widget-w: var(--harmony-widget-strip-w);
-  --ipw-widget-h: calc(var(--harmony-widget-strip-w) * 0.47);
-  width: min(100%, var(--harmony-widget-strip-w));
+  --ipw-widget-w: var(--harmony-strip-px, var(--harmony-widget-strip-w));
+  --ipw-widget-h: calc(var(--ipw-widget-w) * 0.47);
+  width: 100%;
   max-width: var(--harmony-widget-strip-w);
   flex-shrink: 0;
   pointer-events: auto;
@@ -691,7 +691,7 @@ html[data-appearance="dark"] {
 
 @media (max-width: 640px) {
   .harmony-page {
-    --hp-panel-w: calc(100vw - 20px);
+    --hp-panel-w: min(640px, calc(100dvw - max(20px, env(safe-area-inset-left, 0px) + env(safe-area-inset-right, 0px) + 12px)));
   }
 
   .harmony-glass-nav {

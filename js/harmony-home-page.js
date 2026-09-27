@@ -69,6 +69,20 @@
   tickClock();
   window.setInterval(tickClock, 1000);
 
+  const widgetRow = document.querySelector(".harmony-page__widget-row");
+  const syncHarmonyStripWidth = () => {
+    if (!widgetRow) return;
+    const w = Math.round(widgetRow.getBoundingClientRect().width);
+    if (w > 0) {
+      document.documentElement.style.setProperty("--harmony-strip-px", `${w}px`);
+    }
+  };
+  syncHarmonyStripWidth();
+  window.addEventListener("resize", syncHarmonyStripWidth, { passive: true });
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener("resize", syncHarmonyStripWidth, { passive: true });
+  }
+
   const syncThemeButton = (mode) => {
     if (!themeBtn) return;
     const isDark = mode === "dark";

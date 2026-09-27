@@ -163,6 +163,15 @@
 
 .ios-stats-dashboard-wrap {
   width: min(100%, 320px);
+  min-width: 0;
+}
+
+.ios-widget-square-pair .ios-stats-dashboard-wrap {
+  width: 100%;
+  max-width: none;
+  min-width: 0;
+  box-sizing: border-box;
+  pointer-events: auto;
 }
 
 .ios-stats-dashboard-wrap__caption {
@@ -179,36 +188,27 @@
   display: none;
 }
 
-/* Same footprint as ios-academy-widget — size from parent strip: (100% - gap) / 2 */
+/* Same footprint as ios-academy-widget — equal columns (Safari-safe grid, not flex % basis) */
 .ios-widget-square-pair {
-  container-type: inline-size;
-  --ios-square-gap: clamp(8px, 3.85cqi, 14px);
-  --ios-square-r: clamp(14px, 6.04cqi, 22px);
-  --ios-square-size: calc((100% - var(--ios-square-gap)) / 2);
-  display: flex;
-  flex-wrap: nowrap;
-  align-items: flex-start;
-  justify-content: flex-start;
-  gap: var(--ios-square-gap);
+  --ios-square-gap: clamp(8px, 2.6vw, 14px);
+  --ios-square-r: clamp(14px, 4.2vw, 22px);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: var(--ios-square-gap);
+  row-gap: 0;
+  align-items: start;
   width: 100%;
+  min-width: 0;
   box-sizing: border-box;
 }
 
 .ios-widget-square-pair .ios-academy-widget {
-  flex: 0 0 var(--ios-square-size);
-  width: var(--ios-square-size);
-  max-width: var(--ios-square-size);
-  --agw-size: var(--ios-square-size);
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  --agw-size: 100%;
   --agw-r: var(--ios-square-r);
   box-sizing: border-box;
-}
-
-.ios-widget-square-pair .ios-stats-dashboard-wrap {
-  flex: 0 0 var(--ios-square-size);
-  width: var(--ios-square-size);
-  max-width: var(--ios-square-size);
-  box-sizing: border-box;
-  pointer-events: auto;
 }
 
 .ios-stats-dashboard--square {
@@ -265,6 +265,51 @@
   -webkit-line-clamp: 2;
   text-wrap: balance;
   white-space: normal;
+}
+
+@supports not (width: 1cqi) {
+  .ios-stats-dashboard--square {
+    gap: 2px 3px;
+  }
+
+  .ios-stats-dashboard--square .ios-stats-dashboard__ring .ring-bg,
+  .ios-stats-dashboard--square .ios-stats-dashboard__ring .ring-progress {
+    stroke-width: 5px;
+  }
+
+  .ios-stats-dashboard--square .ios-stats-dashboard__icon {
+    width: clamp(11px, 3.2vw, 16px);
+    height: clamp(11px, 3.2vw, 16px);
+  }
+
+  .ios-stats-dashboard--square .ios-stats-dashboard__value {
+    font-size: clamp(7px, 2.4vw, 11px);
+  }
+
+  .ios-stats-dashboard--square .ios-stats-dashboard__label {
+    font-size: clamp(7px, 2.1vw, 11px);
+  }
+}
+
+@supports not (font-size: 1cqi) {
+  .ios-widget-square-pair .ios-academy-widget__title {
+    font-size: clamp(0.62rem, 2.8vw, 0.84rem);
+  }
+
+  .ios-widget-square-pair .ios-academy-widget__course-label,
+  .ios-widget-square-pair .ios-academy-widget__footer {
+    font-size: clamp(0.48rem, 2.2vw, 0.62rem);
+  }
+
+  .ios-widget-square-pair .ios-academy-widget__course-icon {
+    width: clamp(20px, 7.5vw, 28px);
+    height: clamp(20px, 7.5vw, 28px);
+  }
+
+  .ios-widget-square-pair .ios-academy-widget__course-icon svg {
+    width: clamp(11px, 4.5vw, 17px);
+    height: clamp(11px, 4.5vw, 17px);
+  }
 }
 
 .ios-stats-dashboard--square .ios-stats-dashboard__rim {
