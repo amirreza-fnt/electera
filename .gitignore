@@ -1,3 +1,6 @@
+# Dependencies (local dev only)
+node_modules/
+
 # Archives / local backups
 *.zip
 
