@@ -24,6 +24,22 @@ window.HarmonyPhotosWidget = {
     const assetPath = (fileName) =>
       new URL(String(fileName).replace(/^\//, ""), widgetsBaseUrl).href;
 
+    const urlKey = (href) => {
+      if (!href) return "";
+      try {
+        return new URL(href, document.baseURI).href;
+      } catch {
+        return String(href);
+      }
+    };
+
+    const markReady = (href) => {
+      const key = urlKey(href);
+      if (key) loaded.set(key, "ready");
+    };
+
+    const isReady = (href) => loaded.get(urlKey(href)) === "ready";
+
     if (/Firefox/i.test(navigator.userAgent)) {
       root.classList.add("ios-photos-widget--firefox");
     }
@@ -114,19 +130,29 @@ window.HarmonyPhotosWidget = {
 
     const preloadOne = (url) =>
       new Promise((resolve) => {
-        if (loaded.get(url) === "ready") {
+        const key = urlKey(url);
+        if (loaded.get(key) === "ready") {
           resolve(true);
           return;
         }
-        loaded.set(url, "loading");
+        if (loaded.get(key) === "loading") {
+          const wait = () => {
+            if (loaded.get(key) === "ready") resolve(true);
+            else if (loaded.get(key) === "error") resolve(false);
+            else window.setTimeout(wait, 40);
+          };
+          wait();
+          return;
+        }
+        loaded.set(key, "loading");
         const img = new Image();
         img.decoding = "async";
         img.onload = () => {
-          loaded.set(url, "ready");
+          loaded.set(key, "ready");
           resolve(true);
         };
         img.onerror = () => {
-          loaded.set(url, "error");
+          loaded.set(key, "error");
           resolve(false);
         };
         img.src = url;
@@ -142,10 +168,30 @@ window.HarmonyPhotosWidget = {
     const scheduleIdlePreload = (list) => {
       const run = () => preloadSequential(list, 1);
       if ("requestIdleCallback" in window) {
-        requestIdleCallback(run, { timeout: 4000 });
+        requestIdleCallback(run, { timeout: 1200 });
       } else {
-        window.setTimeout(run, 32);
+        window.setTimeout(run, 16);
       }
+    };
+
+    const warmCarousel = (list, activeIndex) => {
+      void Promise.all(
+        list.map((url, i) => (i === activeIndex ? Promise.resolve(true) : preloadOne(url)))
+      );
+    };
+
+    const indexForDisplayed = (imgEl) => {
+      if (!imgEl || !urls.length) return 0;
+      const shown = urlKey(imgEl.currentSrc || imgEl.src);
+      let idx = urls.findIndex((u) => urlKey(u) === shown);
+      if (idx >= 0) return idx;
+      try {
+        const path = new URL(shown).pathname;
+        idx = urls.findIndex((u) => new URL(u).pathname === path);
+      } catch {
+        idx = -1;
+      }
+      return idx >= 0 ? idx : 0;
     };
 
     const revealFirst = (url) => {
@@ -158,7 +204,7 @@ window.HarmonyPhotosWidget = {
     };
 
     const crossfadeTo = (nextUrl) => {
-      if (transitioning || loaded.get(nextUrl) !== "ready") return false;
+      if (transitioning || !isReady(nextUrl)) return false;
       const [a, b] = photos();
       if (!a || !b || !nextUrl) return false;
 
@@ -181,13 +227,19 @@ window.HarmonyPhotosWidget = {
 
     const tick = () => {
       if (urls.length < 2) return;
-      let tries = 0;
-      while (tries < urls.length) {
-        index = (index + 1) % urls.length;
-        const next = urls[index];
-        if (loaded.get(next) === "ready" && crossfadeTo(next)) return;
-        tries += 1;
-      }
+      void (async () => {
+        let tries = 0;
+        while (tries < urls.length) {
+          index = (index + 1) % urls.length;
+          const next = urls[index];
+          if (!isReady(next)) {
+            // eslint-disable-next-line no-await-in-loop
+            await preloadOne(next);
+          }
+          if (isReady(next) && crossfadeTo(next)) return;
+          tries += 1;
+        }
+      })();
     };
 
     const startCarousel = () => {
@@ -213,10 +265,11 @@ window.HarmonyPhotosWidget = {
 
       index = 0;
       if (inlineReady && firstImg.src) {
-        const match = urls.findIndex((u) => firstImg.src.includes(u) || firstImg.getAttribute("src") === u);
-        if (match >= 0) index = match;
-        loaded.set(urls[index], "ready");
+        index = indexForDisplayed(firstImg);
+        markReady(urls[index]);
+        markReady(firstImg.currentSrc || firstImg.src);
         root.classList.add("is-ready");
+        warmCarousel(urls, index);
         startCarousel();
         scheduleIdlePreload(urls);
         return;
@@ -239,6 +292,7 @@ window.HarmonyPhotosWidget = {
 
       revealFirst(firstUrl);
       root.classList.add("is-ready");
+      warmCarousel(urls, index);
       startCarousel();
       scheduleIdlePreload(urls);
     };
