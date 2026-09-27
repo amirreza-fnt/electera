@@ -1,0 +1,58 @@
+/* ==========================================================================
+   iOS 26 notification page — page-specific bits (scoped under .ios-notif-page)
+   ========================================================================== */
+
+.ios-notif-page .ios-device-wrap {
+  background:
+    radial-gradient(60% 50% at 50% 40%, rgba(255, 235, 200, 0.06), transparent 70%),
+    #0a0a0c;
+}
+
+/* "Tap to enable sound" — only when autoplay is blocked */
+.ios-notif-page__unlock {
+  position: absolute;
+  left: 50%;
+  bottom: 138px;
+  z-index: 9;
+  transform: translateX(-50%);
+  animation: ios-unlock-in 480ms cubic-bezier(0.32, 0.72, 0, 1) both;
+}
+
+.ios-notif-page__unlock[hidden] {
+  display: none;
+}
+
+@keyframes ios-unlock-in {
+  from { opacity: 0; transform: translate(-50%, 16px); }
+  to   { opacity: 1; transform: translate(-50%, 0); }
+}
+
+/* While the alert sound plays, the banner carries a faint pulse of light */
+.ios-notif-page .ios-notif.is-sounding::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0) 70%);
+  animation: ios-sound-pulse var(--ios-sound-duration, 2400ms) ease-out both;
+}
+
+@keyframes ios-sound-pulse {
+  0%   { opacity: 0; }
+  12%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* Dragging feedback */
+.ios-notif-page .ios-notif.is-dragging {
+  cursor: grabbing;
+  transition: none;
+}
+
+@media (max-width: 640px) {
+  .ios-notif-page__unlock {
+    bottom: calc(132px + env(safe-area-inset-bottom));
+  }
+}

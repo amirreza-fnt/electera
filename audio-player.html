@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Snooze — SZA · Audio Player</title>
+  <meta name="description" content="A liquid-glass audio player floating over a deep blue ocean." />
+  <meta name="theme-color" content="#0b4a68" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/audio-player.css" />
+</head>
+<body class="audio-player-page">
+  <main class="audio-player-page__main" id="audio-player-main">
+    <h1 class="audio-player-page__sr">Audio player</h1>
+
+    <!-- ================= Background: procedural ocean ================= -->
+    <div class="audio-player-background" aria-hidden="true">
+      <svg class="audio-player-background__foam audio-player-background__foam--coarse" preserveAspectRatio="none">
+        <filter id="ap-foam-coarse" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
+          <feTurbulence type="fractalNoise" baseFrequency="0.0035 0.0055" numOctaves="5" seed="12" />
+          <feColorMatrix type="matrix"
+            values="0 0 0 0 0.93
+                    0 0 0 0 0.98
+                    0 0 0 0 1
+                    6.5 0 0 0 -3.55" />
+          <feGaussianBlur stdDeviation="0.8" />
+        </filter>
+        <rect width="100%" height="100%" filter="url(#ap-foam-coarse)" />
+      </svg>
+
+      <svg class="audio-player-background__foam audio-player-background__foam--fine" preserveAspectRatio="none">
+        <filter id="ap-foam-fine" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
+          <feTurbulence type="turbulence" baseFrequency="0.012 0.018" numOctaves="3" seed="4" />
+          <feColorMatrix type="matrix"
+            values="0 0 0 0 0.9
+                    0 0 0 0 0.97
+                    0 0 0 0 1
+                    -3.4 0 0 0 0.95" />
+        </filter>
+        <rect width="100%" height="100%" filter="url(#ap-foam-fine)" />
+      </svg>
+
+      <div class="audio-player-background__light audio-player-background__light--deep"></div>
+      <div class="audio-player-background__light audio-player-background__light--surf"></div>
+      <div class="audio-player-background__vignette"></div>
+    </div>
+
+    <!-- ================= Player card ================= -->
+    <div class="audio-player-stage">
+      <div class="audio-player-float">
+        <section class="audio-player-card" id="audio-player-card" aria-label="Now playing">
+          <div class="audio-player-card__refraction" aria-hidden="true"></div>
+          <div class="audio-player-card__sheen" aria-hidden="true"></div>
+
+          <header class="audio-player-card__head">
+            <figure class="audio-player-artwork" id="audio-player-artwork">
+              <svg class="audio-player-artwork__image" viewBox="0 0 160 160" role="img" aria-labelledby="ap-artwork-title">
+                <title id="ap-artwork-title">Album artwork: a figure sitting on a diving board above the open sea</title>
+                <defs>
+                  <linearGradient id="ap-art-sea" x1="0" y1="0" x2="0.4" y2="1">
+                    <stop offset="0" stop-color="#0c3d5c" />
+                    <stop offset="0.55" stop-color="#155f85" />
+                    <stop offset="1" stop-color="#0a2f4a" />
+                  </linearGradient>
+                  <filter id="ap-art-waves" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
+                    <feTurbulence type="turbulence" baseFrequency="0.05 0.09" numOctaves="3" seed="9" />
+                    <feColorMatrix type="matrix"
+                      values="0 0 0 0 0.75
+                              0 0 0 0 0.9
+                              0 0 0 0 1
+                              -2.6 0 0 0 0.62" />
+                  </filter>
+                  <clipPath id="ap-art-clip">
+                    <rect width="160" height="160" rx="24" />
+                  </clipPath>
+                </defs>
+                <g clip-path="url(#ap-art-clip)">
+                  <rect width="160" height="160" fill="url(#ap-art-sea)" />
+                  <rect width="160" height="160" filter="url(#ap-art-waves)" opacity="0.55" />
+                  <!-- diving board -->
+                  <path d="M76 106h84v6H76z" fill="#e8f2f8" />
+                  <path d="M76 112h84v3H76z" fill="#9dc0d6" opacity="0.7" />
+                  <!-- seated figure -->
+                  <g>
+                    <!-- hair -->
+                    <path d="M60 66c0-9 5-15 12-15s12 6 12 15c0 4-1 7-3 9H63c-2-2-3-5-3-9Z" fill="#0b1e2c" />
+                    <!-- head -->
+                    <circle cx="72" cy="66" r="7" fill="#7a4a30" />
+                    <!-- shirt -->
+                    <path d="M62 76h20a4 4 0 0 1 4 4v20a4 4 0 0 1-4 4H62a4 4 0 0 1-4-4V80a4 4 0 0 1 4-4Z" fill="#eef4f8" />
+                    <path d="M71 78h3v10h-3z" fill="#c9d8e2" opacity="0.6" />
+                    <!-- arms -->
+                    <path d="M58 82c-3 4-4 10-3 18a2 2 0 0 0 4 0c-1-7 0-12 2-15Z" fill="#7a4a30" />
+                    <path d="M86 82c3 4 4 10 3 18a2 2 0 0 1-4 0c1-7 0-12-2-15Z" fill="#7a4a30" />
+                    <!-- legs -->
+                    <path d="M63 104h7v24a3.5 3.5 0 0 1-7 0zM74 104h7v24a3.5 3.5 0 0 1-7 0z" fill="#1a2c3a" />
+                    <!-- shoes -->
+                    <path d="M62 126h9v5a2 2 0 0 1-2 2h-5a2 2 0 0 1-2-2zM73 126h9v5a2 2 0 0 1-2 2h-5a2 2 0 0 1-2-2z" fill="#6b3d26" />
+                  </g>
+                </g>
+              </svg>
+            </figure>
+
+            <div class="audio-player-track">
+              <h2 class="audio-player-track__title" id="audio-player-title">Snooze</h2>
+              <p class="audio-player-track__artist" id="audio-player-artist">SZA</p>
+            </div>
+          </header>
+
+          <div class="audio-player-progress">
+            <div class="audio-player-progress__times">
+              <span class="audio-player-progress__time" id="audio-player-current">01:20</span>
+              <span class="audio-player-progress__time" id="audio-player-duration">04:41</span>
+            </div>
+
+            <div class="audio-player-progress__track" id="audio-player-wave">
+              <div class="audio-player-progress__bars audio-player-progress__bars--base" aria-hidden="true"></div>
+              <div class="audio-player-progress__bars audio-player-progress__bars--fill" aria-hidden="true"></div>
+              <input
+                class="audio-player-progress__input"
+                id="audio-player-seek"
+                type="range"
+                min="0"
+                max="281"
+                step="1"
+                value="80"
+                aria-label="Seek"
+                aria-valuetext="1 minute 20 seconds of 4 minutes 41 seconds" />
+            </div>
+          </div>
+
+          <div class="audio-player-controls">
+            <button class="audio-player-controls__button" id="audio-player-prev" type="button" aria-label="Previous track">
+              <svg class="audio-player-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M7 5.5v13" />
+                <path d="M17 6.1v11.8a1 1 0 0 1-1.54.84L8.4 13.1a1.3 1.3 0 0 1 0-2.2l7.06-4.64A1 1 0 0 1 17 6.1Z" />
+              </svg>
+            </button>
+
+            <button class="audio-player-controls__button audio-player-controls__button--play" id="audio-player-play" type="button" aria-label="Play" aria-pressed="false">
+              <svg class="audio-player-icon audio-player-icon--play" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path fill="currentColor" stroke="none" d="M8.5 5.9v12.2a1.2 1.2 0 0 0 1.84.99l9.24-6.1a1.2 1.2 0 0 0 0-1.98L10.34 4.9A1.2 1.2 0 0 0 8.5 5.9Z" />
+              </svg>
+              <svg class="audio-player-icon audio-player-icon--pause" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <rect fill="currentColor" stroke="none" x="6.5" y="5" width="4" height="14" rx="1.6" />
+                <rect fill="currentColor" stroke="none" x="13.5" y="5" width="4" height="14" rx="1.6" />
+              </svg>
+            </button>
+
+            <button class="audio-player-controls__button" id="audio-player-next" type="button" aria-label="Next track">
+              <svg class="audio-player-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M17 5.5v13" />
+                <path d="M7 6.1v11.8a1 1 0 0 0 1.54.84l7.06-4.64a1.3 1.3 0 0 0 0-2.2L8.54 5.26A1 1 0 0 0 7 6.1Z" />
+              </svg>
+            </button>
+          </div>
+
+          <div class="audio-player-volume">
+            <button class="audio-player-volume__mute" id="audio-player-mute" type="button" aria-label="Mute" aria-pressed="false">
+              <svg class="audio-player-icon audio-player-icon--volume" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M4 9.5v5a1 1 0 0 0 1 1h2.6l4.2 3.3a.8.8 0 0 0 1.2-.7V5.9a.8.8 0 0 0-1.2-.7L7.6 8.5H5a1 1 0 0 0-1 1Z" />
+                <path class="audio-player-icon__wave audio-player-icon__wave--1" d="M16 9.5a3.5 3.5 0 0 1 0 5" />
+                <path class="audio-player-icon__wave audio-player-icon__wave--2" d="M18.6 7a7 7 0 0 1 0 10" />
+                <path class="audio-player-icon__mute-x" d="M16.5 10l4 4M20.5 10l-4 4" />
+              </svg>
+            </button>
+            <div class="audio-player-volume__slider">
+              <div class="audio-player-volume__fill" id="audio-player-volume-fill"></div>
+              <input
+                class="audio-player-volume__input"
+                id="audio-player-volume"
+                type="range"
+                min="0"
+                max="1"
+                step="0.01"
+                value="0.75"
+                aria-label="Volume" />
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- Audio element: set `src` on a track to connect real audio. -->
+    <audio id="audio-player-audio" preload="metadata"></audio>
+  </main>
+
+  <script src="js/audio-player.js" defer></script>
+</body>
+</html>

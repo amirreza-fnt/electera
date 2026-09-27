@@ -1,0 +1,293 @@
+/* ==========================================================================
+   Liquid Glass Buttons — showcase page (scoped under .lg-showcase)
+   The component itself lives in liquid-glass-button.css.
+   ========================================================================== */
+
+.lg-showcase {
+  --lgs-sky-top: #78aee0;
+  --lgs-sky-bottom: #d6e8f5;
+  --lgs-grass: #5e9b3a;
+  --lgs-grass-dark: #3f7a2a;
+  --lgs-grass-light: #8cc35c;
+  --lgs-water: #6b96b4;
+  --lgs-text: #ffffff;
+  --lgs-text-soft: rgba(255, 255, 255, 0.78);
+  --lgs-font: "Poppins", -apple-system, "Segoe UI", system-ui, sans-serif;
+  --lgs-panel: rgba(14, 48, 30, 0.34);
+  --lgs-panel-border: rgba(255, 255, 255, 0.28);
+
+  margin: 0;
+  min-height: 100%;
+  font-family: var(--lgs-font);
+  color: var(--lgs-text);
+  background:
+    linear-gradient(180deg, var(--lgs-sky-top) 0%, var(--lgs-sky-bottom) 46%, var(--lgs-grass-light) 52%, var(--lgs-grass) 70%, var(--lgs-grass-dark) 100%);
+  background-attachment: fixed;
+  -webkit-font-smoothing: antialiased;
+}
+
+.lg-showcase *,
+.lg-showcase *::before,
+.lg-showcase *::after {
+  box-sizing: border-box;
+}
+
+.lg-showcase__sr {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.lg-showcase__main {
+  display: flex;
+  flex-direction: column;
+  gap: 56px;
+  padding: 0 0 96px;
+}
+
+/* --------------------------------------------------------------------------
+   Hero — landscape scene + the two reference spheres
+   -------------------------------------------------------------------------- */
+.lg-showcase__hero {
+  position: relative;
+  min-height: min(100vh, 720px);
+  min-height: min(100dvh, 720px);
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 28px;
+  padding: 48px 24px;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.lg-showcase__scene {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.lg-showcase__sky {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(60% 40% at 50% 0%, rgba(255, 255, 255, 0.35), transparent 70%),
+    linear-gradient(180deg, #6ea6dc 0%, #9cc4e8 35%, #d7e9f6 58%, #e6f0f7 62%);
+}
+
+.lg-showcase__cloud {
+  position: absolute;
+  height: 14%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.55) 60%, transparent);
+  filter: blur(10px);
+}
+
+.lg-showcase__cloud--1 { left: 6%; top: 18%; width: 26%; }
+.lg-showcase__cloud--2 { left: 42%; top: 10%; width: 22%; height: 11%; }
+.lg-showcase__cloud--3 { right: 8%; top: 22%; width: 24%; }
+
+.lg-showcase__hill {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(1.5px);
+}
+
+.lg-showcase__hill--far {
+  left: 14%;
+  right: 14%;
+  top: 47%;
+  height: 30%;
+  background: radial-gradient(ellipse at 50% 30%, #a6d36f, #6fae43 70%);
+  filter: blur(3px);
+}
+
+.lg-showcase__hill--left {
+  left: -18%;
+  top: 46%;
+  width: 66%;
+  height: 90%;
+  background: radial-gradient(ellipse at 40% 25%, #9ccf62 0%, #5f9d3a 45%, #3e7a2a 100%);
+}
+
+.lg-showcase__hill--right {
+  right: -20%;
+  top: 48%;
+  width: 66%;
+  height: 90%;
+  background: radial-gradient(ellipse at 60% 25%, #9ccf62 0%, #5f9d3a 45%, #3e7a2a 100%);
+}
+
+.lg-showcase__river {
+  position: absolute;
+  left: 34%;
+  right: 34%;
+  top: 56%;
+  bottom: -10%;
+  background: linear-gradient(180deg, #bcd6e6 0%, #7ea7c4 30%, #4f7c9d 100%);
+  clip-path: polygon(38% 0, 62% 0, 100% 100%, 0 100%);
+  filter: blur(1px);
+}
+
+.lg-showcase__pair {
+  position: relative;
+  z-index: 1;
+  margin-top: clamp(24px, 9vh, 96px); /* spheres straddle the horizon, as in the reference */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(28px, 6vw, 96px);
+}
+
+.lg-showcase__caption {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  font-size: 0.9rem;
+  color: rgba(20, 50, 30, 0.75);
+}
+
+.lg-showcase__caption-tag {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.55);
+  color: #1f4d2c;
+  font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
+  font-size: 0.8rem;
+}
+
+/* --------------------------------------------------------------------------
+   Library sections
+   -------------------------------------------------------------------------- */
+.lg-showcase__section {
+  width: min(1120px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 28px clamp(16px, 3vw, 36px) 36px;
+  border-radius: 28px;
+  border: 1px solid var(--lgs-panel-border);
+  background: var(--lgs-panel);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 24px 50px -30px rgba(0, 30, 10, 0.45);
+}
+
+.lg-showcase__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px 18px;
+  margin-bottom: 26px;
+}
+
+.lg-showcase__title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.lg-showcase__hint {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--lgs-text-soft);
+}
+
+.lg-showcase__hint code,
+.lg-showcase__title code {
+  padding: 1px 6px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.18);
+  font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
+  font-size: 0.85em;
+}
+
+.lg-showcase__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: clamp(20px, 3vw, 40px);
+}
+
+.lg-showcase__row--baseline {
+  align-items: flex-end;
+}
+
+/* Labeled items (used by the States row) */
+.lg-showcase__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.lg-showcase__item-label {
+  font-size: 0.8rem;
+  color: var(--lgs-text-soft);
+  font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
+}
+
+/* Usage */
+.lg-showcase__code-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+}
+
+.lg-showcase__code {
+  margin: 0;
+  padding: 18px 20px;
+  border-radius: 18px;
+  background: rgba(10, 35, 20, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #e9f5ec;
+  font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
+  font-size: 0.8rem;
+  line-height: 1.55;
+  overflow: auto;
+  tab-size: 2;
+}
+
+/* --------------------------------------------------------------------------
+   Responsive
+   -------------------------------------------------------------------------- */
+@media (max-width: 640px) {
+  .lg-showcase__main {
+    gap: 32px;
+  }
+
+  .lg-showcase__hero {
+    min-height: 78vh;
+    padding: 32px 16px;
+  }
+
+  /* Reference-size spheres are too large for phones: step down to lg */
+  .lg-showcase__pair .lg-btn--xl {
+    font-size: 18px;
+  }
+
+  .lg-showcase__section {
+    width: calc(100% - 20px);
+    padding: 22px 16px 28px;
+    border-radius: 22px;
+  }
+
+  .lg-showcase__row {
+    justify-content: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lg-showcase * {
+    transition-duration: 1ms !important;
+  }
+}

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+
+<html lang="fa" dir="rtl">
+
+<head>
+
+  <meta charset="UTF-8" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+
+  <title>هارمونی — منوی شیشه‌ای</title>
+
+  <meta name="description" content="منوی شیشه‌ای روی پس‌زمینه هارمونی با حالت روز و شب." />
+
+  <meta name="theme-color" content="#ebe3d9" id="harmony-theme-color" />
+  <meta name="color-scheme" content="light" id="harmony-color-scheme" />
+
+  <script>
+    (function () {
+      var mode = "light";
+      try {
+        var s = localStorage.getItem("harmony-appearance");
+        if (s === "light" || s === "dark") mode = s;
+      } catch (e) {}
+      var chrome = mode === "dark" ? "#1a1816" : "#ebe3d9";
+      document.documentElement.setAttribute("data-appearance", mode);
+      var tc = document.getElementById("harmony-theme-color");
+      if (tc) tc.setAttribute("content", chrome);
+      var cs = document.getElementById("harmony-color-scheme");
+      if (cs) cs.setAttribute("content", mode);
+    })();
+  </script>
+
+  <link rel="preload" href="assets/fonts/yekan-bakh/YekanBakhFaNum-Regular.woff2" as="font" type="font/woff2" crossorigin />
+
+  <link rel="stylesheet" href="css/fonts-yekan-bakh.css" />
+
+  <link rel="stylesheet" href="css/ios26-glass.css" />
+
+  <link rel="stylesheet" href="css/harmony-home-page.css" />
+
+</head>
+
+<body class="harmony-page ios-glass is-wall-pending" data-appearance="light">
+
+  <script>
+    (function () {
+      var mode = document.documentElement.getAttribute("data-appearance") || "light";
+      document.body.setAttribute("data-appearance", mode);
+    })();
+  </script>
+
+  <div class="harmony-page__canvas" aria-hidden="true">
+
+    <div class="harmony-page__solid"></div>
+
+    <div class="harmony-page__ambient"></div>
+
+    <div class="harmony-page__wall" id="harmony-wall"></div>
+
+    <div class="harmony-page__ios-wash"></div>
+
+    <div class="harmony-page__blobs">
+
+      <div class="harmony-blob harmony-blob--shadow"><span class="harmony-blob__shape"></span></div>
+
+      <div class="harmony-blob harmony-blob--glow-left"><span class="harmony-blob__shape"></span></div>
+
+      <div class="harmony-blob harmony-blob--gold-far"><span class="harmony-blob__shape"></span></div>
+
+      <div class="harmony-blob harmony-blob--warm-violet"><span class="harmony-blob__shape"></span></div>
+
+      <div class="harmony-blob harmony-blob--apricot"><span class="harmony-blob__shape"></span></div>
+
+      <div class="harmony-blob harmony-blob--honey"><span class="harmony-blob__shape"></span></div>
+
+      <div class="harmony-blob harmony-blob--rose-gold"><span class="harmony-blob__shape"></span></div>
+
+      <div class="harmony-blob harmony-blob--taupe"><span class="harmony-blob__shape"></span></div>
+
+      <div class="harmony-blob harmony-blob--bronze"><span class="harmony-blob__shape"></span></div>
+
+      <div class="harmony-blob harmony-blob--logo-glow"><span class="harmony-blob__shape"></span></div>
+
+    </div>
+
+    <div class="harmony-page__matte"></div>
+
+    <div class="harmony-page__vignette"></div>
+
+    <div class="harmony-page__grain"></div>
+
+  </div>
+
+
+
+  <main class="harmony-page__app" id="app">
+
+    <header class="harmony-ios-chrome" aria-hidden="true">
+      <div class="harmony-ios-chrome__island"></div>
+      <div class="harmony-ios-chrome__status">
+        <svg viewBox="0 0 20 13"><rect x="0" y="9" width="3.4" height="4" rx="0.8"/><rect x="5.4" y="6.5" width="3.4" height="6.5" rx="0.8"/><rect x="10.8" y="3.5" width="3.4" height="9.5" rx="0.8"/><rect x="16.2" y="0.5" width="3.4" height="12.5" rx="0.8"/></svg>
+        <svg viewBox="0 0 18 13"><path d="M9 3.2c2.6 0 4.9 1 6.7 2.6l1.3-1.5A11.6 11.6 0 0 0 9 1 11.6 11.6 0 0 0 1 4.3l1.3 1.5A9.6 9.6 0 0 1 9 3.2Zm0 3.4c1.7 0 3.2.6 4.4 1.7l1.3-1.5A8.2 8.2 0 0 0 9 4.7a8.2 8.2 0 0 0-5.7 2.1l1.3 1.5A6.2 6.2 0 0 1 9 6.6Zm0 3.4c.8 0 1.5.3 2 .8L9 13l-2-2.2c.5-.5 1.2-.8 2-.8Z"/></svg>
+        <svg viewBox="0 0 27 13"><rect x="0.5" y="0.5" width="23" height="12" rx="3.5" fill="none" stroke="currentColor" stroke-opacity="0.45"/><rect x="2" y="2" width="20" height="9" rx="2.2"/><path d="M25 4.5v4a2 2 0 0 0 0-4Z" opacity="0.45"/></svg>
+      </div>
+    </header>
+
+    <h1 class="harmony-page__sr">منوی شیشه‌ای</h1>
+
+
+
+    <div class="harmony-sheet" id="harmony-sheet" aria-hidden="true">
+
+      <button type="button" class="harmony-sheet__backdrop" id="harmony-sheet-backdrop" aria-label="بستن تنظیمات"></button>
+
+      <div class="harmony-sheet__panel harmony-ios-surface" role="dialog" aria-modal="true" aria-labelledby="harmony-sheet-title">
+
+        <h2 class="harmony-page__sr" id="harmony-sheet-title">تنظیمات</h2>
+
+        <div class="harmony-settings-pop__inner" id="harmony-theme-mount"></div>
+
+      </div>
+
+    </div>
+
+
+
+    <footer class="harmony-dock">
+
+      <section class="harmony-glass-panel harmony-ios-surface" aria-label="ناوبری">
+
+        <nav class="harmony-glass-nav" id="primary-nav" aria-label="منوی اصلی">
+
+          <span class="harmony-glass-nav__indicator" id="nav-indicator" aria-hidden="true"></span>
+
+          <ul class="harmony-glass-nav__list">
+
+            <li>
+
+              <a class="harmony-nav-item harmony-nav-link" href="#home" data-nav="home" aria-current="page">
+
+                <svg class="harmony-icon" viewBox="0 0 24 24" aria-hidden="true">
+
+                  <path fill="currentColor" fill-rule="evenodd"
+
+                    d="M11.1 2.9a1.4 1.4 0 0 1 1.8 0l7.6 6.5c.32.27.5.66.5 1.07V19a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 19v-8.53c0-.41.18-.8.5-1.07l7.6-6.5Z M12 13.5a2.25 2.25 0 0 0-2.25 2.25V21.5h4.5v-5.75A2.25 2.25 0 0 0 12 13.5Z" />
+
+                </svg>
+
+                <span class="harmony-nav-link__label">خانه</span>
+
+              </a>
+
+            </li>
+
+            <li>
+
+              <a class="harmony-nav-item harmony-nav-link" href="#search" data-nav="search">
+
+                <svg class="harmony-icon harmony-icon--stroke" viewBox="0 0 24 24" aria-hidden="true">
+
+                  <circle cx="10.5" cy="10.5" r="6.75" />
+
+                  <path d="m20.5 20.5-5.2-5.2" />
+
+                </svg>
+
+                <span class="harmony-nav-link__label">جستجو</span>
+
+              </a>
+
+            </li>
+
+            <li>
+
+              <button type="button" class="harmony-nav-item harmony-nav-btn" id="settings-btn" data-nav="settings" aria-expanded="false" aria-controls="harmony-sheet">
+
+                <svg class="harmony-icon harmony-icon--stroke" viewBox="0 0 24 24" aria-hidden="true">
+
+                  <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
+
+                  <circle cx="12" cy="12" r="3" />
+
+                </svg>
+
+                <span class="harmony-nav-link__label">تنظیمات</span>
+
+              </button>
+
+            </li>
+
+            <li>
+
+              <a class="harmony-nav-item harmony-nav-link" href="#contact" data-nav="contact">
+
+                <svg class="harmony-icon harmony-icon--stroke" viewBox="0 0 24 24" aria-hidden="true">
+
+                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92Z"/>
+
+                </svg>
+
+                <span class="harmony-nav-link__label">تماس</span>
+
+              </a>
+
+            </li>
+
+          </ul>
+
+        </nav>
+
+      </section>
+
+    </footer>
+
+  </main>
+
+
+
+  <script src="js/ios26-glass.js"></script>
+
+  <script src="js/harmony-home-page.js" defer></script>
+
+</body>
+
+</html>
+
+

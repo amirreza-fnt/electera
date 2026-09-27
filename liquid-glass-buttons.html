@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Liquid Glass Buttons — Components</title>
+  <meta name="description" content="Reusable liquid-glass sphere buttons: clear and frosted variants, four sizes, three shapes and every interaction state." />
+  <meta name="theme-color" content="#7fb2d9" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- Component (reusable anywhere) -->
+  <link rel="stylesheet" href="css/liquid-glass-button.css" />
+  <!-- This showcase page only -->
+  <link rel="stylesheet" href="css/liquid-glass-showcase.css" />
+</head>
+<body class="lg-showcase">
+  <main class="lg-showcase__main">
+
+    <!-- Reference recreation: the two spheres -->
+    <section class="lg-showcase__hero" aria-labelledby="lg-hero-title">
+      <div class="lg-showcase__scene" aria-hidden="true">
+        <div class="lg-showcase__sky"></div>
+        <div class="lg-showcase__cloud lg-showcase__cloud--1"></div>
+        <div class="lg-showcase__cloud lg-showcase__cloud--2"></div>
+        <div class="lg-showcase__cloud lg-showcase__cloud--3"></div>
+        <div class="lg-showcase__hill lg-showcase__hill--left"></div>
+        <div class="lg-showcase__hill lg-showcase__hill--right"></div>
+        <div class="lg-showcase__hill lg-showcase__hill--far"></div>
+        <div class="lg-showcase__river"></div>
+      </div>
+
+      <h1 class="lg-showcase__sr" id="lg-hero-title">Liquid Glass Buttons</h1>
+
+      <div class="lg-showcase__pair">
+        <button class="lg-btn lg-btn--xl" type="button">
+          <span class="lg-btn__icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path data-fill fill-rule="evenodd" d="M11.1 2.9a1.4 1.4 0 0 1 1.8 0l7.6 6.5c.32.27.5.66.5 1.07V19a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 19v-8.53c0-.41.18-.8.5-1.07l7.6-6.5Z M12 13.5a2.25 2.25 0 0 0-2.25 2.25V21.5h4.5v-5.75A2.25 2.25 0 0 0 12 13.5Z"/></svg>
+          </span>
+          <span class="lg-btn__label">Home</span>
+        </button>
+
+        <button class="lg-btn lg-btn--frosted lg-btn--xl" type="button">
+          <span class="lg-btn__icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path data-fill fill-rule="evenodd" d="M11.1 2.9a1.4 1.4 0 0 1 1.8 0l7.6 6.5c.32.27.5.66.5 1.07V19a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 19v-8.53c0-.41.18-.8.5-1.07l7.6-6.5Z M12 13.5a2.25 2.25 0 0 0-2.25 2.25V21.5h4.5v-5.75A2.25 2.25 0 0 0 12 13.5Z"/></svg>
+          </span>
+          <span class="lg-btn__label">Home</span>
+        </button>
+      </div>
+
+      <p class="lg-showcase__caption">
+        <span class="lg-showcase__caption-tag">lg-btn</span> clear ·
+        <span class="lg-showcase__caption-tag">lg-btn--frosted</span> frosted
+      </p>
+    </section>
+
+    <!-- Component library (rendered by JS via LiquidGlassButton.create) -->
+    <section class="lg-showcase__section" aria-labelledby="lg-sizes-title">
+      <header class="lg-showcase__head">
+        <h2 class="lg-showcase__title" id="lg-sizes-title">Sizes</h2>
+        <p class="lg-showcase__hint">sm · md · lg · xl — every dimension scales from <code>font-size</code></p>
+      </header>
+      <div class="lg-showcase__row lg-showcase__row--baseline" id="lg-row-sizes"></div>
+    </section>
+
+    <section class="lg-showcase__section" aria-labelledby="lg-variants-title">
+      <header class="lg-showcase__head">
+        <h2 class="lg-showcase__title" id="lg-variants-title">Variants</h2>
+        <p class="lg-showcase__hint">clear · frosted · tinted (<code>--lg-tint: R G B</code>)</p>
+      </header>
+      <div class="lg-showcase__row" id="lg-row-variants"></div>
+    </section>
+
+    <section class="lg-showcase__section" aria-labelledby="lg-shapes-title">
+      <header class="lg-showcase__head">
+        <h2 class="lg-showcase__title" id="lg-shapes-title">Shapes</h2>
+        <p class="lg-showcase__hint">circle · pill · icon-only (label stays for screen readers)</p>
+      </header>
+      <div class="lg-showcase__row" id="lg-row-shapes"></div>
+    </section>
+
+    <section class="lg-showcase__section" aria-labelledby="lg-states-title">
+      <header class="lg-showcase__head">
+        <h2 class="lg-showcase__title" id="lg-states-title">States</h2>
+        <p class="lg-showcase__hint">default · hover · active · focus · selected · disabled · loading</p>
+      </header>
+      <div class="lg-showcase__row lg-showcase__row--labeled" id="lg-row-states"></div>
+    </section>
+
+    <section class="lg-showcase__section" aria-labelledby="lg-live-title">
+      <header class="lg-showcase__head">
+        <h2 class="lg-showcase__title" id="lg-live-title">Interactive</h2>
+        <p class="lg-showcase__hint">Toggle buttons keep <code>aria-pressed</code>; the first one simulates a 1.5s loading action.</p>
+      </header>
+      <div class="lg-showcase__row" id="lg-row-live"></div>
+    </section>
+
+    <section class="lg-showcase__section lg-showcase__section--code" aria-labelledby="lg-usage-title">
+      <header class="lg-showcase__head">
+        <h2 class="lg-showcase__title" id="lg-usage-title">Usage</h2>
+      </header>
+      <div class="lg-showcase__code-grid">
+        <pre class="lg-showcase__code"><code>&lt;link rel="stylesheet" href="css/liquid-glass-button.css"&gt;
+&lt;script src="js/liquid-glass-button.js" defer&gt;&lt;/script&gt;
+
+&lt;button class="lg-btn lg-btn--frosted lg-btn--lg" type="button"&gt;
+  &lt;span class="lg-btn__icon"&gt;&lt;svg viewBox="0 0 24 24"&gt;…&lt;/svg&gt;&lt;/span&gt;
+  &lt;span class="lg-btn__label"&gt;Home&lt;/span&gt;
+&lt;/button&gt;</code></pre>
+        <pre class="lg-showcase__code"><code>const btn = LiquidGlassButton.create({
+  label: "Search",
+  icon: "search",        // home · search · heart · settings · play · bell · plus · user · camera · check
+  variant: "frosted",    // clear · frosted · tinted
+  size: "lg",            // sm · md · lg · xl
+  shape: "circle",       // circle · pill · icon
+  toggle: true,
+  onClick: (e, el) =&gt; console.log(el.getAttribute("aria-pressed")),
+});
+document.body.append(btn);</code></pre>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/liquid-glass-button.js" defer></script>
+  <script src="js/liquid-glass-showcase.js" defer></script>
+</body>
+</html>

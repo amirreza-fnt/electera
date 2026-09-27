@@ -1,0 +1,834 @@
+/* ==========================================================================
+   Audio Player page — fully scoped under .audio-player-page
+   Every selector, variable (--ap-*) and keyframe (ap-*) is page-specific.
+   ========================================================================== */
+
+.audio-player-page {
+  /* Palette */
+  --ap-sea-deep: #031a2a;
+  --ap-sea-mid: #073b56;
+  --ap-sea-light: #0c6488;
+  --ap-sea-bright: #1687ae;
+  --ap-foam: #e7f4fa;
+  --ap-ink: #0b1e2c;
+
+  --ap-text: rgba(255, 255, 255, 0.97);
+  --ap-text-soft: rgba(255, 255, 255, 0.82);
+  --ap-text-muted: rgba(255, 255, 255, 0.7);
+
+  /* Glass */
+  --ap-glass-bg: rgba(160, 215, 240, 0.1);
+  --ap-glass-bg-strong: rgba(255, 255, 255, 0.16);
+  --ap-glass-bg-hover: rgba(255, 255, 255, 0.26);
+  --ap-glass-border: rgba(255, 255, 255, 0.3);
+  --ap-glass-border-strong: rgba(255, 255, 255, 0.42);
+  --ap-glass-blur: 14px;
+  --ap-glass-blur-strong: 18px;
+  --ap-glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.45), inset 0 -1px 0 rgba(255, 255, 255, 0.06);
+  --ap-shadow-card: 0 40px 90px -40px rgba(2, 20, 36, 0.8), 0 18px 40px -24px rgba(2, 20, 36, 0.6);
+  --ap-shadow-button: 0 14px 30px -16px rgba(2, 20, 36, 0.7);
+  --ap-glow-cyan: 0 0 0 1px rgba(255, 255, 255, 0.12), 0 12px 36px -10px rgba(110, 210, 255, 0.55);
+
+  /* Layout scale: the reference card is 570 design units wide. */
+  --ap-card-w: min(570px, calc(100vw - 32px));
+  --ap-u: calc(var(--ap-card-w) / 570);
+
+  /* Radius */
+  --ap-r-card: clamp(32px, calc(48 * var(--ap-u)), 52px);
+  --ap-r-art: clamp(16px, calc(24 * var(--ap-u)), 26px);
+  --ap-r-pill: 999px;
+
+  /* Type */
+  --ap-font: "Inter", "SF Pro Display", -apple-system, "Segoe UI", system-ui, sans-serif;
+  --ap-fs-title: clamp(1.75rem, calc(52 * var(--ap-u)), 3.5rem);
+  --ap-fs-artist: clamp(1rem, calc(28 * var(--ap-u)), 1.875rem);
+  --ap-fs-time: clamp(0.75rem, calc(20 * var(--ap-u)), 1.3rem);
+
+  /* Motion */
+  --ap-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ap-dur: 240ms;
+  --ap-dur-slow: 480ms;
+
+  /* Tilt (set by JS) */
+  --ap-rx: 0deg;
+  --ap-ry: 0deg;
+
+  margin: 0;
+  min-height: 100%;
+  font-family: var(--ap-font);
+  color: var(--ap-text);
+  background: var(--ap-sea-mid);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.audio-player-page *,
+.audio-player-page *::before,
+.audio-player-page *::after {
+  box-sizing: border-box;
+}
+
+.audio-player-page svg {
+  display: block;
+}
+
+.audio-player-page :focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.92);
+  outline-offset: 3px;
+}
+
+.audio-player-page__sr {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ==========================================================================
+   Page shell
+   ========================================================================== */
+.audio-player-page__main {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* ==========================================================================
+   Background — procedural ocean
+   ========================================================================== */
+.audio-player-background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background:
+    radial-gradient(circle min(70vw, 70vh) at 88% 92%, rgba(40, 150, 195, 0.5), transparent 100%),
+    radial-gradient(circle min(65vw, 65vh) at 12% 12%, rgba(2, 16, 30, 0.75), transparent 100%),
+    linear-gradient(150deg, var(--ap-sea-deep) 0%, var(--ap-sea-mid) 45%, var(--ap-sea-light) 80%, var(--ap-sea-bright) 100%);
+}
+
+.audio-player-background__foam {
+  position: absolute;
+  inset: -6%;
+  width: 112%;
+  height: 112%;
+  will-change: transform;
+}
+
+/* Large foam structures, denser toward the bottom-right like the reference */
+.audio-player-background__foam--coarse {
+  opacity: 0.78;
+  mix-blend-mode: screen;
+  -webkit-mask-image: linear-gradient(135deg, rgba(0, 0, 0, 0.06) 0%, rgba(0, 0, 0, 0.3) 40%, rgba(0, 0, 0, 0.7) 70%, rgba(0, 0, 0, 1) 100%);
+  mask-image: linear-gradient(135deg, rgba(0, 0, 0, 0.06) 0%, rgba(0, 0, 0, 0.3) 40%, rgba(0, 0, 0, 0.7) 70%, rgba(0, 0, 0, 1) 100%);
+  animation: ap-sea-drift 38s ease-in-out infinite alternate;
+}
+
+/* Fine surface veins */
+.audio-player-background__foam--fine {
+  opacity: 0.2;
+  mix-blend-mode: screen;
+  -webkit-mask-image: linear-gradient(135deg, rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.85));
+  mask-image: linear-gradient(135deg, rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.85));
+  animation: ap-sea-drift 52s ease-in-out infinite alternate-reverse;
+}
+
+.audio-player-background__light {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  will-change: transform;
+}
+
+.audio-player-background__light--deep {
+  left: -10%;
+  top: 30%;
+  width: 55vmax;
+  height: 40vmax;
+  background: radial-gradient(closest-side, rgba(3, 25, 44, 0.75), transparent);
+  animation: ap-light-breathe 18s ease-in-out infinite alternate;
+}
+
+.audio-player-background__light--surf {
+  right: -12%;
+  bottom: -18%;
+  width: 60vmax;
+  height: 46vmax;
+  background: radial-gradient(closest-side, rgba(210, 238, 250, 0.3), transparent);
+  animation: ap-light-breathe 22s ease-in-out infinite alternate-reverse;
+}
+
+.audio-player-background__vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(120% 90% at 50% 50%, transparent 55%, rgba(3, 18, 32, 0.45) 100%);
+}
+
+@keyframes ap-sea-drift {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(-2.5%, 1.5%, 0) scale(1.06);
+  }
+}
+
+@keyframes ap-light-breathe {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(3%, -2%, 0) scale(1.08);
+  }
+}
+
+/* ==========================================================================
+   Card
+   ========================================================================== */
+.audio-player-stage {
+  position: relative;
+  z-index: 1;
+  width: var(--ap-card-w);
+  perspective: 1400px;
+}
+
+.audio-player-float {
+  animation: ap-float 9s ease-in-out infinite;
+  will-change: transform;
+}
+
+@keyframes ap-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, calc(-6 * var(--ap-u)), 0);
+  }
+}
+
+.audio-player-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(20px, calc(34 * var(--ap-u)), 36px);
+  border-radius: var(--ap-r-card);
+  border: 1px solid var(--ap-glass-border);
+  background:
+    linear-gradient(160deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0.04) 40%, rgba(255, 255, 255, 0.02) 60%, rgba(255, 255, 255, 0.1) 100%),
+    var(--ap-glass-bg);
+  -webkit-backdrop-filter: blur(var(--ap-glass-blur)) saturate(1.5) brightness(1.04);
+  backdrop-filter: blur(var(--ap-glass-blur)) saturate(1.5) brightness(1.04);
+  box-shadow: var(--ap-glass-highlight), var(--ap-shadow-card);
+  transform: rotateX(var(--ap-rx)) rotateY(var(--ap-ry));
+  transform-style: preserve-3d;
+  transition: transform var(--ap-dur-slow) var(--ap-ease);
+  overflow: hidden;
+}
+
+/* Liquid refraction — slow-moving caustic veins inside the glass */
+.audio-player-card__refraction {
+  position: absolute;
+  inset: -20%;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.5;
+  mix-blend-mode: soft-light;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='640' height='640'%3E%3Cfilter id='f' x='0' y='0' width='100%25' height='100%25' color-interpolation-filters='sRGB'%3E%3CfeTurbulence type='turbulence' baseFrequency='0.011 0.016' numOctaves='3' seed='21'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 -3.2 0 0 0 1'/%3E%3CfeGaussianBlur stdDeviation='0.6'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  animation: ap-caustics 30s linear infinite;
+  will-change: transform;
+}
+
+@keyframes ap-caustics {
+  from {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  to {
+    transform: translate3d(-4%, -3%, 0) rotate(2deg);
+  }
+}
+
+/* Specular sheen across the top edge */
+.audio-player-card__sheen {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.22), transparent 18%),
+    radial-gradient(120% 60% at 0% 0%, rgba(255, 255, 255, 0.16), transparent 55%);
+}
+
+.audio-player-card > *:not(.audio-player-card__refraction):not(.audio-player-card__sheen) {
+  position: relative;
+  z-index: 1;
+}
+
+/* --------------------------------------------------------------------------
+   Head: artwork + track info
+   -------------------------------------------------------------------------- */
+.audio-player-card__head {
+  display: flex;
+  align-items: center;
+  gap: clamp(16px, calc(32 * var(--ap-u)), 34px);
+}
+
+.audio-player-artwork {
+  flex: 0 0 auto;
+  margin: 0;
+  width: clamp(88px, calc(160 * var(--ap-u)), 168px);
+  height: clamp(88px, calc(160 * var(--ap-u)), 168px);
+  border-radius: var(--ap-r-art);
+  overflow: hidden;
+  box-shadow: 0 18px 40px -18px rgba(2, 20, 36, 0.8), inset 0 0 0 1px rgba(255, 255, 255, 0.18);
+  transition: transform var(--ap-dur-slow) var(--ap-ease), box-shadow var(--ap-dur-slow) var(--ap-ease);
+}
+
+.audio-player-artwork__image {
+  width: 100%;
+  height: 100%;
+}
+
+.audio-player-card.is-playing .audio-player-artwork {
+  transform: scale(1.02);
+  box-shadow: 0 24px 48px -18px rgba(2, 20, 36, 0.85), inset 0 0 0 1px rgba(255, 255, 255, 0.28);
+}
+
+.audio-player-track {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(6px, calc(14 * var(--ap-u)), 14px);
+}
+
+.audio-player-track__title {
+  margin: 0;
+  font-size: var(--ap-fs-title);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--ap-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-shadow: 0 2px 18px rgba(2, 20, 36, 0.25);
+}
+
+.audio-player-track__artist {
+  margin: 0;
+  font-size: var(--ap-fs-artist);
+  font-weight: 400;
+  line-height: 1.2;
+  color: var(--ap-text-soft);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* --------------------------------------------------------------------------
+   Progress (times + waveform)
+   -------------------------------------------------------------------------- */
+.audio-player-progress {
+  margin-top: clamp(28px, calc(56 * var(--ap-u)), 60px);
+}
+
+.audio-player-progress__times {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: clamp(6px, calc(10 * var(--ap-u)), 10px);
+  font-size: var(--ap-fs-time);
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+  color: var(--ap-text-muted);
+  letter-spacing: 0.01em;
+}
+
+.audio-player-progress__track {
+  position: relative;
+  height: clamp(32px, calc(56 * var(--ap-u)), 58px);
+  touch-action: none;
+}
+
+.audio-player-progress__bars {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  gap: clamp(2px, calc(3 * var(--ap-u)), 3px);
+  pointer-events: none;
+}
+
+.audio-player-progress__bar {
+  flex: 1 1 0;
+  height: var(--ap-bar-h, 40%);
+  min-height: 12%;
+  border-radius: var(--ap-r-pill);
+  background: currentColor;
+}
+
+.audio-player-progress__bars--base {
+  color: rgba(255, 255, 255, 0.36);
+}
+
+.audio-player-progress__bars--fill {
+  color: #fff;
+  clip-path: inset(0 calc(100% - var(--ap-progress, 0%)) 0 0 round 2px);
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.28));
+  transition: clip-path 120ms linear;
+}
+
+.audio-player-progress__track.is-scrubbing .audio-player-progress__bars--fill {
+  transition: none;
+}
+
+.audio-player-progress__input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+}
+
+.audio-player-progress__input:focus-visible {
+  opacity: 1;
+  outline: none;
+}
+
+.audio-player-progress__input:focus-visible::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 4px;
+  height: 100%;
+  border-radius: 2px;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.35);
+}
+
+.audio-player-progress__input:focus-visible::-moz-range-thumb {
+  width: 4px;
+  height: 100%;
+  border: 0;
+  border-radius: 2px;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.35);
+}
+
+.audio-player-progress__input::-webkit-slider-runnable-track {
+  height: 100%;
+  background: transparent;
+}
+
+.audio-player-progress__input::-moz-range-track {
+  height: 100%;
+  background: transparent;
+}
+
+/* --------------------------------------------------------------------------
+   Playback controls
+   -------------------------------------------------------------------------- */
+.audio-player-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(16px, calc(27 * var(--ap-u)), 28px);
+  margin-top: clamp(16px, calc(22 * var(--ap-u)), 24px);
+}
+
+.audio-player-controls__button {
+  --ap-size: clamp(56px, calc(88 * var(--ap-u)), 92px);
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: var(--ap-size);
+  height: var(--ap-size);
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid var(--ap-glass-border-strong);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.26), rgba(255, 255, 255, 0.06)),
+    var(--ap-glass-bg-strong);
+  -webkit-backdrop-filter: blur(var(--ap-glass-blur-strong)) saturate(1.3);
+  backdrop-filter: blur(var(--ap-glass-blur-strong)) saturate(1.3);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55), inset 0 -2px 6px rgba(255, 255, 255, 0.08), var(--ap-shadow-button);
+  color: var(--ap-text);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background var(--ap-dur) var(--ap-ease),
+    transform var(--ap-dur) var(--ap-ease),
+    box-shadow var(--ap-dur) var(--ap-ease);
+}
+
+.audio-player-controls__button:active {
+  transform: scale(0.94);
+}
+
+.audio-player-icon {
+  width: clamp(20px, calc(30 * var(--ap-u)), 32px);
+  height: clamp(20px, calc(30 * var(--ap-u)), 32px);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform var(--ap-dur) var(--ap-ease);
+}
+
+/* Play / pause morph */
+.audio-player-controls__button--play .audio-player-icon {
+  grid-area: 1 / 1;
+  transition:
+    opacity var(--ap-dur) var(--ap-ease),
+    transform var(--ap-dur) var(--ap-ease);
+}
+
+.audio-player-icon--play {
+  transform: translateX(4%) scale(1);
+}
+
+.audio-player-icon--pause {
+  opacity: 0;
+  transform: scale(0.6) rotate(-45deg);
+}
+
+.audio-player-card.is-playing .audio-player-icon--play {
+  opacity: 0;
+  transform: translateX(4%) scale(0.6) rotate(45deg);
+}
+
+.audio-player-card.is-playing .audio-player-icon--pause {
+  opacity: 1;
+  transform: scale(1) rotate(0deg);
+}
+
+/* Soft breathing glow on the play button while playing */
+.audio-player-controls__button--play::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  box-shadow: 0 0 0 0 rgba(180, 235, 255, 0);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--ap-dur-slow) var(--ap-ease);
+}
+
+.audio-player-card.is-playing .audio-player-controls__button--play::after {
+  opacity: 1;
+  animation: ap-glow 2.6s ease-in-out infinite;
+}
+
+@keyframes ap-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(180, 235, 255, 0.22), 0 0 24px 4px rgba(150, 225, 255, 0.18);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(180, 235, 255, 0), 0 0 40px 10px rgba(150, 225, 255, 0.3);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Volume
+   -------------------------------------------------------------------------- */
+.audio-player-volume {
+  display: flex;
+  align-items: center;
+  gap: clamp(10px, calc(14 * var(--ap-u)), 14px);
+  margin-top: clamp(18px, calc(28 * var(--ap-u)), 30px);
+  padding: 0 clamp(4px, calc(8 * var(--ap-u)), 8px);
+  opacity: 0.85;
+  transition: opacity var(--ap-dur) var(--ap-ease);
+}
+
+.audio-player-volume:hover,
+.audio-player-volume:focus-within {
+  opacity: 1;
+}
+
+.audio-player-volume__mute {
+  display: grid;
+  place-items: center;
+  width: clamp(32px, calc(36 * var(--ap-u)), 38px);
+  height: clamp(32px, calc(36 * var(--ap-u)), 38px);
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--ap-text-soft);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background var(--ap-dur) var(--ap-ease), color var(--ap-dur) var(--ap-ease), transform var(--ap-dur) var(--ap-ease);
+}
+
+.audio-player-volume__mute:active {
+  transform: scale(0.92);
+}
+
+.audio-player-icon--volume {
+  width: clamp(18px, calc(22 * var(--ap-u)), 22px);
+  height: clamp(18px, calc(22 * var(--ap-u)), 22px);
+}
+
+.audio-player-icon__wave,
+.audio-player-icon__mute-x {
+  transition: opacity var(--ap-dur) var(--ap-ease), transform var(--ap-dur) var(--ap-ease);
+  transform-origin: 14px 12px;
+}
+
+.audio-player-icon__mute-x {
+  opacity: 0;
+  transform: scale(0.6);
+}
+
+.audio-player-volume.is-muted .audio-player-icon__wave,
+.audio-player-volume.is-low .audio-player-icon__wave--2 {
+  opacity: 0;
+  transform: scale(0.7);
+}
+
+.audio-player-volume.is-muted .audio-player-icon__mute-x {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.audio-player-volume__slider {
+  position: relative;
+  flex: 1 1 auto;
+  height: 22px;
+  display: flex;
+  align-items: center;
+}
+
+.audio-player-volume__slider::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 4px;
+  border-radius: var(--ap-r-pill);
+  background: rgba(255, 255, 255, 0.24);
+  box-shadow: inset 0 1px 1px rgba(2, 20, 36, 0.2);
+}
+
+.audio-player-volume__fill {
+  position: absolute;
+  left: 0;
+  height: 4px;
+  width: var(--ap-volume, 75%);
+  border-radius: var(--ap-r-pill);
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.8), #fff);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.35);
+  pointer-events: none;
+  transition: width 80ms linear;
+}
+
+.audio-player-volume__fill::after {
+  content: "";
+  position: absolute;
+  right: -7px;
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(2, 20, 36, 0.35);
+  transform: translateY(-50%);
+  transition: transform var(--ap-dur) var(--ap-ease);
+}
+
+.audio-player-volume__slider:hover .audio-player-volume__fill::after,
+.audio-player-volume__slider:focus-within .audio-player-volume__fill::after {
+  transform: translateY(-50%) scale(1.15);
+}
+
+.audio-player-volume__input {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+}
+
+.audio-player-volume__input:focus-visible {
+  outline: none;
+}
+
+.audio-player-volume__slider:focus-within::before {
+  box-shadow: inset 0 1px 1px rgba(2, 20, 36, 0.2), 0 0 0 3px rgba(255, 255, 255, 0.25);
+}
+
+/* --------------------------------------------------------------------------
+   Hover (pointer devices only)
+   -------------------------------------------------------------------------- */
+@media (hover: hover) and (pointer: fine) {
+  .audio-player-controls__button:hover {
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.34), rgba(255, 255, 255, 0.1)),
+      var(--ap-glass-bg-hover);
+    transform: translateY(-2px);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65), var(--ap-shadow-button), var(--ap-glow-cyan);
+  }
+
+  .audio-player-controls__button:hover .audio-player-icon {
+    transform: scale(1.06);
+  }
+
+  .audio-player-controls__button--play:hover .audio-player-icon--play {
+    transform: translateX(4%) scale(1.06);
+  }
+
+  .audio-player-card.is-playing .audio-player-controls__button--play:hover .audio-player-icon--play {
+    transform: translateX(4%) scale(0.6) rotate(45deg);
+  }
+
+  .audio-player-controls__button:hover:active {
+    transform: translateY(0) scale(0.94);
+  }
+
+  .audio-player-volume__mute:hover {
+    background: rgba(255, 255, 255, 0.14);
+    color: var(--ap-text);
+  }
+
+  .audio-player-progress__track:hover .audio-player-progress__bars--base {
+    color: rgba(255, 255, 255, 0.46);
+  }
+}
+
+/* ==========================================================================
+   Responsive
+   ========================================================================== */
+
+/* Large desktop: let the card breathe a little more */
+@media (min-width: 1440px) {
+  .audio-player-page {
+    --ap-card-w: 620px;
+  }
+}
+
+/* Phones (portrait): preserve the reference proportions via --ap-u */
+@media (max-width: 480px) {
+  .audio-player-page {
+    --ap-card-w: calc(100vw - 24px);
+  }
+
+  .audio-player-page__main {
+    padding: 12px;
+  }
+
+  .audio-player-card__head {
+    gap: 16px;
+  }
+}
+
+/* Very narrow phones: stack artwork above track info */
+@media (max-width: 340px) {
+  .audio-player-card__head {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* Short landscape viewports (phone rotated) */
+@media (max-height: 520px) and (orientation: landscape) {
+  .audio-player-page {
+    --ap-card-w: min(560px, calc(100vw - 32px));
+  }
+
+  .audio-player-card {
+    padding: 18px 24px;
+  }
+
+  .audio-player-artwork {
+    width: 84px;
+    height: 84px;
+  }
+
+  .audio-player-track__title {
+    font-size: 1.75rem;
+  }
+
+  .audio-player-track__artist {
+    font-size: 1rem;
+  }
+
+  .audio-player-progress {
+    margin-top: 16px;
+  }
+
+  .audio-player-progress__track {
+    height: 34px;
+  }
+
+  .audio-player-controls {
+    margin-top: 12px;
+  }
+
+  .audio-player-controls__button {
+    --ap-size: 56px;
+  }
+
+  .audio-player-volume {
+    margin-top: 12px;
+  }
+}
+
+/* ==========================================================================
+   Fallbacks & preferences
+   ========================================================================== */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .audio-player-card {
+    background:
+      linear-gradient(160deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.08)),
+      rgba(18, 82, 114, 0.7);
+  }
+
+  .audio-player-controls__button {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.36), rgba(255, 255, 255, 0.18));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .audio-player-float,
+  .audio-player-card__refraction,
+  .audio-player-background__foam,
+  .audio-player-background__light,
+  .audio-player-card.is-playing .audio-player-controls__button--play::after {
+    animation: none;
+  }
+
+  .audio-player-card,
+  .audio-player-controls__button,
+  .audio-player-icon,
+  .audio-player-artwork,
+  .audio-player-progress__bars--fill,
+  .audio-player-volume__fill {
+    transition-duration: 1ms;
+  }
+}

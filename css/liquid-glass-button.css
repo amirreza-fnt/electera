@@ -1,0 +1,443 @@
+/* ==========================================================================
+   Liquid Glass Button — reusable component
+   Namespace: .lg-btn  (variables: --lg-*)
+
+   Markup:
+   <button class="lg-btn lg-btn--frosted lg-btn--lg" type="button">
+     <span class="lg-btn__icon"><svg viewBox="0 0 24 24">…</svg></span>
+     <span class="lg-btn__label">Home</span>
+   </button>
+
+   Variants : lg-btn--clear (default) | lg-btn--frosted | lg-btn--tinted
+   Sizes    : lg-btn--sm | lg-btn--md (default) | lg-btn--lg | lg-btn--xl
+   Shapes   : circle (default) | lg-btn--pill | lg-btn--icon
+   States   : :hover  :active  :focus-visible  [disabled]
+              [aria-pressed="true"]  .is-loading
+              demo-only mirrors: .is-hover .is-active .is-focus
+   ========================================================================== */
+
+.lg-btn {
+  /* --- tokens (override per instance or per theme) --- */
+  --lg-size: 10em;                 /* sphere diameter, relative to font-size */
+  --lg-tint: 255 255 255;          /* RGB triplet used by --tinted */
+  --lg-tint-alpha: 0.42;
+  --lg-text: #ffffff;
+  --lg-hx: 32%;                    /* specular highlight position (JS-driven) */
+  --lg-hy: 24%;
+  --lg-blur: 1.5px;                /* backdrop blur — clear glass */
+  --lg-rim: rgba(255, 255, 255, 0.62);
+  --lg-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --lg-dur: 280ms;
+
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45em;
+  width: var(--lg-size);
+  height: var(--lg-size);
+  padding: 0;
+  margin: 0;
+  border: 0;
+  border-radius: 50%;
+  isolation: isolate;
+  overflow: hidden;
+
+  font-family: "Poppins", "Quicksand", -apple-system, "Segoe UI", system-ui, sans-serif;
+  font-size: 13px;                 /* md */
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  color: var(--lg-text);
+  text-decoration: none;
+  text-shadow: 0 0.08em 0.5em rgba(0, 20, 10, 0.4);
+
+  /* glass body: nearly clear centre, denser toward the rim (lens feel) */
+  background:
+    radial-gradient(circle at 50% 55%,
+      rgba(255, 255, 255, 0.02) 0%,
+      rgba(255, 255, 255, 0.05) 55%,
+      rgba(255, 255, 255, 0.14) 82%,
+      rgba(255, 255, 255, 0.28) 100%);
+  -webkit-backdrop-filter: blur(var(--lg-blur)) saturate(1.25) brightness(1.06) contrast(1.04);
+  backdrop-filter: blur(var(--lg-blur)) saturate(1.25) brightness(1.06) contrast(1.04);
+
+  box-shadow:
+    inset 0 0 0 1px var(--lg-rim),                                  /* crisp rim */
+    inset 0 -1.2em 1.9em -0.5em rgba(6, 30, 18, 0.58),              /* dark refraction band, bottom */
+    inset 0 0.7em 1.4em -0.5em rgba(255, 255, 255, 0.55),           /* soft inner light, top */
+    inset 0.6em 0 1.2em -0.9em rgba(255, 255, 255, 0.25),           /* side sheen */
+    inset 0 0 0.35em rgba(255, 255, 255, 0.28),                     /* thin inner glow along the edge */
+    0 1.4em 2.6em -1.1em rgba(0, 20, 10, 0.45);                      /* drop shadow */
+
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    transform var(--lg-dur) var(--lg-ease),
+    box-shadow var(--lg-dur) var(--lg-ease),
+    filter var(--lg-dur) var(--lg-ease),
+    background var(--lg-dur) var(--lg-ease);
+}
+
+/* Specular highlight + caustic bottom glow */
+.lg-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at var(--lg-hx) var(--lg-hy),
+      rgba(255, 255, 255, 0.9) 0%,
+      rgba(255, 255, 255, 0.45) 7%,
+      rgba(255, 255, 255, 0.12) 18%,
+      transparent 34%),
+    radial-gradient(ellipse 62% 20% at 50% 101%,
+      rgba(255, 255, 255, 0.6),
+      rgba(255, 255, 255, 0.15) 55%,
+      transparent 80%),
+    radial-gradient(ellipse 28% 55% at 102% 50%,
+      rgba(255, 255, 255, 0.22),
+      transparent 75%);
+  transition: opacity var(--lg-dur) var(--lg-ease);
+}
+
+/* Fresnel rim: bright arcs along the edge */
+.lg-btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  padding: 0.12em;
+  background: conic-gradient(from 210deg,
+    rgba(255, 255, 255, 0) 0deg,
+    rgba(255, 255, 255, 0.85) 60deg,
+    rgba(255, 255, 255, 0.1) 120deg,
+    rgba(255, 255, 255, 0) 170deg,
+    rgba(255, 255, 255, 0.55) 250deg,
+    rgba(255, 255, 255, 0.05) 300deg,
+    rgba(255, 255, 255, 0) 360deg);
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  opacity: 0.9;
+  transition: opacity var(--lg-dur) var(--lg-ease), transform var(--lg-dur) var(--lg-ease);
+}
+
+/* --------------------------------------------------------------------------
+   Content
+   -------------------------------------------------------------------------- */
+.lg-btn__icon,
+.lg-btn__label {
+  position: relative;
+  z-index: 1;
+}
+
+.lg-btn__icon {
+  display: grid;
+  place-items: center;
+  width: 2.7em;
+  height: 2.7em;
+  filter: drop-shadow(0 0.08em 0.4em rgba(0, 20, 10, 0.35));
+  transition: transform var(--lg-dur) var(--lg-ease), opacity var(--lg-dur) var(--lg-ease);
+}
+
+.lg-btn__icon svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.lg-btn__icon svg [data-fill] {
+  fill: currentColor;
+  stroke: none;
+}
+
+.lg-btn__label {
+  font-size: 1.15em;
+  white-space: nowrap;
+  transition: opacity var(--lg-dur) var(--lg-ease);
+}
+
+/* --------------------------------------------------------------------------
+   Variants
+   -------------------------------------------------------------------------- */
+/* Frosted: blurred backdrop, milky body — right-hand sphere in the reference */
+.lg-btn--frosted {
+  --lg-blur: 14px;
+  background:
+    radial-gradient(circle at 50% 45%,
+      rgba(255, 255, 255, 0.2) 0%,
+      rgba(255, 255, 255, 0.1) 55%,
+      rgba(255, 255, 255, 0.16) 82%,
+      rgba(255, 255, 255, 0.3) 100%);
+  -webkit-backdrop-filter: blur(var(--lg-blur)) saturate(1.45) brightness(1.08);
+  backdrop-filter: blur(var(--lg-blur)) saturate(1.45) brightness(1.08);
+  text-shadow: 0 0.08em 0.4em rgba(0, 20, 10, 0.3);
+}
+
+/* Tinted: frosted with a colour wash — set --lg-tint: R G B */
+.lg-btn--tinted {
+  --lg-blur: 12px;
+  background:
+    radial-gradient(circle at 50% 45%,
+      rgb(var(--lg-tint) / calc(var(--lg-tint-alpha) + 0.1)) 0%,
+      rgb(var(--lg-tint) / var(--lg-tint-alpha)) 60%,
+      rgb(var(--lg-tint) / calc(var(--lg-tint-alpha) + 0.2)) 100%);
+  -webkit-backdrop-filter: blur(var(--lg-blur)) saturate(1.1) brightness(1.1);
+  backdrop-filter: blur(var(--lg-blur)) saturate(1.1) brightness(1.1);
+}
+
+/* --------------------------------------------------------------------------
+   Sizes (font-size drives every dimension via em)
+   -------------------------------------------------------------------------- */
+.lg-btn--sm { font-size: 9px; }    /* 90px  */
+.lg-btn--md { font-size: 13px; }   /* 130px */
+.lg-btn--lg { font-size: 18px; }   /* 180px */
+.lg-btn--xl { font-size: 24px; }   /* 240px — reference size */
+
+/* --------------------------------------------------------------------------
+   Shapes
+   -------------------------------------------------------------------------- */
+/* Pill: horizontal icon + label */
+.lg-btn--pill {
+  flex-direction: row;
+  gap: 0.55em;
+  width: auto;
+  height: calc(var(--lg-size) * 0.42);
+  padding: 0 1.5em 0 1.15em;
+  border-radius: 999px;
+  box-shadow:
+    inset 0 0 0 1px var(--lg-rim),
+    inset 0 -0.5em 0.9em -0.35em rgba(6, 30, 18, 0.45),
+    inset 0 0.35em 0.8em -0.3em rgba(255, 255, 255, 0.55),
+    0 1em 2em -0.9em rgba(0, 20, 10, 0.45);
+}
+
+.lg-btn--pill .lg-btn__icon {
+  width: 1.7em;
+  height: 1.7em;
+}
+
+.lg-btn--pill .lg-btn__label {
+  font-size: 1.1em;
+}
+
+.lg-btn--pill::before {
+  background:
+    radial-gradient(circle at var(--lg-hx) var(--lg-hy),
+      rgba(255, 255, 255, 0.8) 0%,
+      rgba(255, 255, 255, 0.3) 12%,
+      transparent 40%),
+    radial-gradient(ellipse 70% 40% at 50% 104%,
+      rgba(255, 255, 255, 0.5),
+      transparent 75%);
+}
+
+/* Icon-only: label is kept for assistive tech but hidden visually */
+.lg-btn--icon {
+  gap: 0;
+}
+
+.lg-btn--icon .lg-btn__icon {
+  width: 3.4em;
+  height: 3.4em;
+}
+
+.lg-btn--icon .lg-btn__label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* --------------------------------------------------------------------------
+   States
+   -------------------------------------------------------------------------- */
+/* Hover — lift, brighter rim, stronger specular */
+@media (hover: hover) and (pointer: fine) {
+  .lg-btn:not([disabled]):not(.is-loading):hover {
+    transform: translateY(-0.25em) scale(1.03);
+    box-shadow:
+      inset 0 0 0 1px rgba(255, 255, 255, 0.85),
+      inset 0 -0.95em 1.7em -0.55em rgba(6, 30, 18, 0.45),
+      inset 0 0.7em 1.4em -0.5em rgba(255, 255, 255, 0.7),
+      inset 0.6em 0 1.2em -0.9em rgba(255, 255, 255, 0.3),
+      0 1.8em 3em -1.1em rgba(0, 20, 10, 0.5),
+      0 0 2.4em -0.4em rgba(255, 255, 255, 0.35);
+  }
+
+  .lg-btn:not([disabled]):not(.is-loading):hover .lg-btn__icon {
+    transform: translateY(-0.06em) scale(1.06);
+  }
+
+  .lg-btn:not([disabled]):not(.is-loading):hover::after {
+    opacity: 1;
+  }
+}
+
+.lg-btn.is-hover {
+  transform: translateY(-0.25em) scale(1.03);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.85),
+    inset 0 -0.95em 1.7em -0.55em rgba(6, 30, 18, 0.45),
+    inset 0 0.7em 1.4em -0.5em rgba(255, 255, 255, 0.7),
+    inset 0.6em 0 1.2em -0.9em rgba(255, 255, 255, 0.3),
+    0 1.8em 3em -1.1em rgba(0, 20, 10, 0.5),
+    0 0 2.4em -0.4em rgba(255, 255, 255, 0.35);
+}
+
+.lg-btn.is-hover .lg-btn__icon {
+  transform: translateY(-0.06em) scale(1.06);
+}
+
+/* Active / pressed down — compress, deepen refraction */
+.lg-btn:not([disabled]):not(.is-loading):active,
+.lg-btn.is-active {
+  transform: translateY(0.05em) scale(0.955);
+  transition-duration: 120ms;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.7),
+    inset 0 -1.1em 1.8em -0.5em rgba(6, 30, 18, 0.6),
+    inset 0 0.9em 1.6em -0.4em rgba(255, 255, 255, 0.4),
+    inset 0 0 1.6em rgba(255, 255, 255, 0.12),
+    0 0.8em 1.6em -0.9em rgba(0, 20, 10, 0.45);
+}
+
+.lg-btn:not([disabled]):not(.is-loading):active .lg-btn__icon,
+.lg-btn.is-active .lg-btn__icon {
+  transform: scale(0.94);
+}
+
+/* Focus ring (keyboard) */
+.lg-btn:focus-visible,
+.lg-btn.is-focus {
+  outline: none;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.9),
+    inset 0 -0.95em 1.7em -0.55em rgba(6, 30, 18, 0.5),
+    inset 0 0.7em 1.4em -0.5em rgba(255, 255, 255, 0.6),
+    0 1.4em 2.6em -1.1em rgba(0, 20, 10, 0.45),
+    0 0 0 0.28em rgba(255, 255, 255, 0.35),
+    0 0 0 0.45em rgba(255, 255, 255, 0.55);
+}
+
+/* Selected / toggled on */
+.lg-btn[aria-pressed="true"],
+.lg-btn.is-selected {
+  background:
+    radial-gradient(circle at 50% 45%,
+      rgba(255, 255, 255, 0.34) 0%,
+      rgba(255, 255, 255, 0.16) 55%,
+      rgba(255, 255, 255, 0.22) 82%,
+      rgba(255, 255, 255, 0.36) 100%);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.95),
+    inset 0 -0.9em 1.6em -0.5em rgba(6, 30, 18, 0.4),
+    inset 0 0.7em 1.4em -0.5em rgba(255, 255, 255, 0.8),
+    inset 0 0 2em rgba(255, 255, 255, 0.28),
+    0 1.4em 2.6em -1.1em rgba(0, 20, 10, 0.45),
+    0 0 2.2em -0.2em rgba(255, 255, 255, 0.45);
+}
+
+.lg-btn[aria-pressed="true"] .lg-btn__label,
+.lg-btn.is-selected .lg-btn__label {
+  font-weight: 600;
+}
+
+/* Disabled */
+.lg-btn[disabled],
+.lg-btn[aria-disabled="true"] {
+  cursor: not-allowed;
+  opacity: 0.48;
+  filter: saturate(0.6);
+  transform: none;
+}
+
+.lg-btn[disabled]::after,
+.lg-btn[aria-disabled="true"]::after {
+  opacity: 0.35;
+}
+
+/* Loading — the rim becomes a spinning arc, content dims */
+.lg-btn.is-loading {
+  cursor: progress;
+}
+
+.lg-btn.is-loading .lg-btn__icon,
+.lg-btn.is-loading .lg-btn__label {
+  opacity: 0.35;
+}
+
+.lg-btn.is-loading::after {
+  padding: 0.18em;
+  opacity: 1;
+  background: conic-gradient(from 0deg,
+    rgba(255, 255, 255, 0) 0deg,
+    rgba(255, 255, 255, 0.15) 200deg,
+    rgba(255, 255, 255, 1) 330deg,
+    rgba(255, 255, 255, 0) 360deg);
+  animation: lg-btn-spin 1.1s linear infinite;
+}
+
+@keyframes lg-btn-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Fallbacks & preferences
+   -------------------------------------------------------------------------- */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .lg-btn {
+    background:
+      radial-gradient(circle at 50% 55%,
+        rgba(255, 255, 255, 0.14) 0%,
+        rgba(255, 255, 255, 0.2) 60%,
+        rgba(255, 255, 255, 0.38) 100%);
+  }
+
+  .lg-btn--frosted,
+  .lg-btn--tinted {
+    background:
+      radial-gradient(circle at 50% 45%,
+        rgba(255, 255, 255, 0.42) 0%,
+        rgba(255, 255, 255, 0.3) 60%,
+        rgba(255, 255, 255, 0.46) 100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lg-btn,
+  .lg-btn::before,
+  .lg-btn::after,
+  .lg-btn__icon,
+  .lg-btn__label {
+    transition-duration: 1ms;
+  }
+
+  .lg-btn.is-loading::after {
+    animation-duration: 2.4s;
+  }
+}

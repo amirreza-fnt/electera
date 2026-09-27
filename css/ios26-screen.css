@@ -1,0 +1,264 @@
+/* ==========================================================================
+   iOS 26 lock screen chrome — shared by ios26-buttons.html & ios26-notification.html
+   Namespace: .ios-page · .ios-device · .ios-screen · .ios-*
+   ========================================================================== */
+
+.ios-page {
+  margin: 0;
+  min-height: 100%;
+  background: #0a0a0c;
+  color: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", "Segoe UI", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.ios-page *,
+.ios-page *::before,
+.ios-page *::after {
+  box-sizing: border-box;
+}
+
+.ios-page svg {
+  display: block;
+}
+
+.ios-sr {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Device frame (desktop / tablet). Becomes full-bleed on phones.
+   -------------------------------------------------------------------------- */
+.ios-device-wrap {
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: 32px 16px;
+}
+
+.ios-device {
+  position: relative;
+  width: min(410px, 100%);
+  aspect-ratio: 410 / 890;
+  padding: 11px;
+  border-radius: 64px;
+  background: linear-gradient(160deg, #3a3a3e, #17171a 40%, #0d0d0f);
+  box-shadow:
+    inset 0 0 0 1.5px rgba(255, 255, 255, 0.12),
+    inset 0 0 0 4px #050506,
+    0 40px 90px -30px rgba(0, 0, 0, 0.8),
+    0 0 0 1px rgba(255, 255, 255, 0.04);
+}
+
+.ios-screen {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 54px;
+  overflow: hidden;
+  isolation: isolate;
+  background: #d8d3c8 url("../assets/images/background.png") center / cover no-repeat;
+}
+
+/* Dynamic Island */
+.ios-island {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  z-index: 6;
+  width: 124px;
+  height: 36px;
+  border-radius: 20px;
+  background: #000;
+  transform: translateX(-50%);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.04);
+}
+
+/* Status bar (right side only, as on the lock screen) */
+.ios-status {
+  position: absolute;
+  top: 18px;
+  right: 30px;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--ios-text, #fff);
+}
+
+.ios-status svg {
+  height: 13px;
+  width: auto;
+  fill: currentColor;
+}
+
+/* Clock */
+.ios-clock {
+  position: absolute;
+  top: 72px;
+  left: 0;
+  right: 0;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: var(--ios-text, #fff);
+  text-shadow: 0 1px 18px rgba(0, 0, 0, 0.12);
+}
+
+.ios-clock__date {
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.ios-clock__time {
+  margin-top: -4px;
+  font-size: 92px;
+  font-weight: 300;
+  letter-spacing: -0.035em;
+  line-height: 1.05;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Lock-screen bottom controls */
+.ios-lock-actions {
+  position: absolute;
+  left: 40px;
+  right: 40px;
+  bottom: 54px;
+  z-index: 5;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ios-home-indicator {
+  position: absolute;
+  left: 50%;
+  bottom: 10px;
+  z-index: 5;
+  width: 138px;
+  height: 5px;
+  border-radius: 3px;
+  background: var(--ios-text, #fff);
+  opacity: 0.92;
+  transform: translateX(-50%);
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.12);
+}
+
+/* Notification stack area (bottom, above the actions — iOS 26 lock screen) */
+.ios-notif-stack {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 138px;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Screen wake (dim → bright) */
+.ios-screen__dim {
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  background: #000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 620ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.ios-screen.is-asleep .ios-screen__dim {
+  opacity: 0.92;
+  transition: none;
+}
+
+/* Small utility corner button (page-level, e.g. replay / appearance) */
+.ios-corner {
+  position: absolute;
+  top: 18px;
+  left: 22px;
+  z-index: 7;
+  display: flex;
+  gap: 8px;
+}
+
+/* --------------------------------------------------------------------------
+   Phone: full-bleed, no bezel
+   -------------------------------------------------------------------------- */
+@media (max-width: 640px) {
+  .ios-device-wrap {
+    padding: 0;
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+
+  .ios-device {
+    width: 100%;
+    aspect-ratio: auto;
+    height: 100vh;
+    height: 100dvh;
+    padding: 0;
+    border-radius: 0;
+    background: none;
+    box-shadow: none;
+  }
+
+  .ios-screen {
+    border-radius: 0;
+  }
+
+  .ios-island {
+    display: none;
+  }
+
+  .ios-status {
+    top: calc(14px + env(safe-area-inset-top));
+    right: 22px;
+  }
+
+  .ios-clock {
+    top: calc(64px + env(safe-area-inset-top));
+  }
+
+  .ios-lock-actions {
+    left: 32px;
+    right: 32px;
+    bottom: calc(48px + env(safe-area-inset-bottom));
+  }
+
+  .ios-notif-stack {
+    bottom: calc(132px + env(safe-area-inset-bottom));
+  }
+
+  .ios-home-indicator {
+    bottom: calc(8px + env(safe-area-inset-bottom));
+  }
+
+  .ios-corner {
+    top: calc(14px + env(safe-area-inset-top));
+  }
+}
+
+@media (max-height: 700px) and (min-width: 641px) {
+  .ios-device {
+    width: min(340px, 100%);
+  }
+
+  .ios-clock__time {
+    font-size: 76px;
+  }
+}

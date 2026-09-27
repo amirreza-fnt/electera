@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Glass Nav — Home</title>
+  <meta name="description" content="A glassmorphism navigation interface with frosted-glass surfaces and vibrant pink and purple ambient light." />
+  <meta name="theme-color" content="#7a2ff0" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#primary-nav">Skip to navigation</a>
+
+  <main class="app" id="app">
+    <h1 class="visually-hidden">Glass navigation</h1>
+
+    <div class="stage">
+      <!-- Ambient background blobs (decorative) -->
+      <div class="blobs" aria-hidden="true">
+        <div class="blob blob--shadow" data-depth="4"><span class="blob__shape"></span></div>
+        <div class="blob blob--glow-left" data-depth="6"><span class="blob__shape"></span></div>
+        <div class="blob blob--pink-far" data-depth="9"><span class="blob__shape"></span></div>
+        <div class="blob blob--violet" data-depth="14"><span class="blob__shape"></span></div>
+        <div class="blob blob--coral" data-depth="11"><span class="blob__shape"></span></div>
+        <div class="blob blob--orange" data-depth="16"><span class="blob__shape"></span></div>
+        <div class="blob blob--pink" data-depth="12"><span class="blob__shape"></span></div>
+        <div class="blob blob--indigo" data-depth="8"><span class="blob__shape"></span></div>
+        <div class="blob blob--purple" data-depth="10"><span class="blob__shape"></span></div>
+      </div>
+
+      <!-- Floating glass panel -->
+      <section class="glass-panel" aria-label="Quick actions">
+        <button class="capture-btn" id="capture-btn" type="button">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path fill="currentColor" fill-rule="evenodd"
+              d="M9.5 4a1 1 0 0 0-.8.4L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-1.7-2.6a1 1 0 0 0-.8-.4h-5Z M12 9.5a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z M12 11.3a2.2 2.2 0 1 1 0 4.4 2.2 2.2 0 0 1 0-4.4Z" />
+          </svg>
+          <span class="capture-btn__label">Capture</span>
+        </button>
+
+        <nav class="glass-nav" id="primary-nav" aria-label="Primary">
+          <span class="glass-nav__indicator" id="nav-indicator" aria-hidden="true"></span>
+          <ul class="glass-nav__list">
+            <li>
+              <a class="nav-link" href="#home" aria-current="page">
+                <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path fill="currentColor" fill-rule="evenodd"
+                    d="M11.1 2.9a1.4 1.4 0 0 1 1.8 0l7.6 6.5c.32.27.5.66.5 1.07V19a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 19v-8.53c0-.41.18-.8.5-1.07l7.6-6.5Z M12 13.5a2.25 2.25 0 0 0-2.25 2.25V21.5h4.5v-5.75A2.25 2.25 0 0 0 12 13.5Z" />
+                </svg>
+                <span class="nav-link__label">Home</span>
+              </a>
+            </li>
+            <li>
+              <a class="nav-link" href="#feed">
+                <svg class="icon icon--stroke" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M14 4H7.5A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9a3.5 3.5 0 0 0 3.5-3.5V10" />
+                  <circle cx="19" cy="5" r="2.25" />
+                  <path d="M8.5 9.5h4M8.5 13h7M8.5 16.5h7" />
+                </svg>
+                <span class="nav-link__label">Feed</span>
+              </a>
+            </li>
+            <li>
+              <a class="nav-link" href="#search">
+                <svg class="icon icon--stroke" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <circle cx="10.5" cy="10.5" r="6.75" />
+                  <path d="m20.5 20.5-5.2-5.2" />
+                </svg>
+                <span class="nav-link__label">Search</span>
+              </a>
+            </li>
+            <li>
+              <a class="nav-link" href="#settings">
+                <svg class="icon icon--stroke" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
+                  <circle cx="12" cy="12" r="3" />
+                </svg>
+                <span class="nav-link__label">Settings</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </section>
+    </div>
+
+    <!-- Camera shutter flash (decorative) -->
+    <div class="flash" id="flash" aria-hidden="true"></div>
+
+    <!-- Toast / live status -->
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </main>
+
+  <script src="js/app.js" defer></script>
+</body>
+</html>
