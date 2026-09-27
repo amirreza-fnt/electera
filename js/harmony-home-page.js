@@ -123,10 +123,7 @@
       activeNav = routeFromHash();
       applyNavState(activeNav);
     }
-    requestAnimationFrame(() => {
-      positionIndicator();
-      requestAnimationFrame(positionIndicator);
-    });
+    requestAnimationFrame(scheduleIndicator);
   };
 
   if (settingsBtn) {
@@ -164,6 +161,7 @@
 
   const DESIGN_W = 640;
   const INDICATOR_DESIGN = 85;
+  let indicatorRaf = 0;
 
   const indicatorSize = () => {
     const panel = nav.closest(".harmony-glass-panel");
@@ -191,6 +189,14 @@
     indicator.style.width = `${w}px`;
     indicator.style.height = `${h}px`;
     indicator.style.transform = `translate3d(${x.toFixed(2)}px, ${y.toFixed(2)}px, 0)`;
+  };
+
+  const scheduleIndicator = () => {
+    if (indicatorRaf) return;
+    indicatorRaf = requestAnimationFrame(() => {
+      indicatorRaf = 0;
+      positionIndicator();
+    });
   };
 
   const applyNavState = (route) => {
@@ -249,12 +255,12 @@
   });
 
   if ("ResizeObserver" in window) {
-    const ro = new ResizeObserver(() => positionIndicator());
+    const ro = new ResizeObserver(() => scheduleIndicator());
     ro.observe(nav);
     const panel = nav.closest(".harmony-glass-panel");
     if (panel) ro.observe(panel);
   } else {
-    window.addEventListener("resize", positionIndicator);
+    window.addEventListener("resize", scheduleIndicator);
   }
 
   applyNavState(routeFromHash());
